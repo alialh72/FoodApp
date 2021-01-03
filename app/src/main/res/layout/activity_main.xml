@@ -17,12 +17,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="150px"
+                android:background="@drawable/navbar_border"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,14 +54,6 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <SearchView
-                    android:layout_width="190dp"
-                    android:layout_height="30dp"
-                    android:queryHint="Location"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,6 +77,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <SearchView
+                    android:id="@+id/RestaurantSearch"
                     android:layout_width="300dp"
                     android:layout_height="30dp"
                     android:queryHint="Search"
@@ -107,7 +101,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="210dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,18 +111,20 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/restaurantlist"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="160dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Local Favorites"
-                    android:textSize="19dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/restaurantlist"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -140,7 +136,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="210dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -150,7 +146,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/restaurantlist2"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="160dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +157,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Top Picks For You"
-                    android:textSize="19dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/restaurantlist2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -173,30 +170,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
+
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/restaurantlist3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView6"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView6"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Restaurants"
-                    android:textSize="19dp"
-                    android:layout_marginBottom="15dp"
-                    app:layout_constraintBottom_toTopOf="@+id/restaurantlist3"
+                    android:layout_height="175dp"
+                    android:background="@drawable/border"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/cuisineimagerandom"
+                            android:layout_width="200dp"
+                            android:layout_height="175dp"
+                            android:adjustViewBounds="true"
+                            android:gravity="center"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintEnd_toEndOf="parent"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ContentDescription"
+                            tools:srcCompat="@tools:sample/avatars" />
+
+                        <TextView
+                            android:id="@+id/cuisinetyperandom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowColor="#696969"
+                            android:shadowDx="10"
+                            android:shadowDy="10"
+                            android:shadowRadius="6"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textSize="35dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cuisinerestaurantlist"
+                    android:layout_width="200dp"
+                    android:layout_height="190dp"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="60dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView2"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

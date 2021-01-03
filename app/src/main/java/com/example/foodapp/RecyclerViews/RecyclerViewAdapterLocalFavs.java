@@ -1,38 +1,38 @@
-package com.example.foodapp;
+package com.example.foodapp.RecyclerViews;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.MainActivity;
 import com.example.foodapp.R;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapterTopPicks extends RecyclerView.Adapter<RecyclerViewAdapterTopPicks.ViewHolder>{
+public class RecyclerViewAdapterLocalFavs extends RecyclerView.Adapter<RecyclerViewAdapterLocalFavs.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<String> mRestaurantName = new ArrayList<>();
     private ArrayList<String> mRestaurantImage = new ArrayList<>();
+    private ListMultimap<String, String> mCuisineTags = ArrayListMultimap.create();
     private Context mContext;
 
 
-    public RecyclerViewAdapterTopPicks(ArrayList<String> lrestauranttext, ArrayList<String> lrestaurantimage, Context context){
+    public RecyclerViewAdapterLocalFavs(ArrayList<String> lrestauranttext, ArrayList<String> lrestaurantimage, Context context, ListMultimap<String, String> cuisineTags){
         mRestaurantImage = lrestaurantimage;
         mRestaurantName = lrestauranttext;
-
+        mCuisineTags = cuisineTags;
         mContext = context;
 
     }
@@ -59,10 +59,23 @@ public class RecyclerViewAdapterTopPicks extends RecyclerView.Adapter<RecyclerVi
 
 
         holder.restauranttext.setText(mRestaurantName.get(position));
+
+        //gets tags from the listmap
+        String selectedCuisine = mRestaurantName.get(position);
+        ArrayList<String> Tags = new ArrayList<>(); //array needs to be reset for every restaurant so it is defined here
+
+        Tags.addAll(mCuisineTags.get(selectedCuisine)); //turns the collection into an arraylist
+
+        String answer = String.join(", ", Tags); //turns the arraylist into a string because an arraylist cant be set as text
+        holder.restaurant_tags.setText(answer);
+
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mRestaurantName.get(position));
+                ((MainActivity)mContext).setCurrentRestaurant(mRestaurantName.get(position), mRestaurantImage.get(position));
             }
         });
 
@@ -78,7 +91,7 @@ public class RecyclerViewAdapterTopPicks extends RecyclerView.Adapter<RecyclerVi
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView restaurantimage;
-        TextView restauranttext;
+        TextView restauranttext, restaurant_tags;
         ConstraintLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -87,6 +100,7 @@ public class RecyclerViewAdapterTopPicks extends RecyclerView.Adapter<RecyclerVi
             restaurantimage = itemView.findViewById(R.id.restaurant_image);
             restauranttext = itemView.findViewById(R.id.restaurant_name);
             parent_layout = itemView.findViewById(R.id.parent_layout);
+            restaurant_tags = itemView.findViewById(R.id.tags);
 
         }
     }

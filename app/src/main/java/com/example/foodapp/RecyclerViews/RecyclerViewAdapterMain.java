@@ -1,18 +1,15 @@
-package com.example.foodapp;
+package com.example.foodapp.RecyclerViews;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -40,7 +37,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_box_large, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_box_small, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
         return holder;
@@ -63,6 +60,7 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mRestaurantName.get(position));
+                ((MainActivity)mContext).setCurrentRestaurant(mRestaurantName.get(position), mRestaurantImage.get(position));
             }
         });
 

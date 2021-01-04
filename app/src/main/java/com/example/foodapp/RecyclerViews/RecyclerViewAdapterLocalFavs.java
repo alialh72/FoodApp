@@ -19,6 +19,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecyclerViewAdapterLocalFavs extends RecyclerView.Adapter<RecyclerViewAdapterLocalFavs.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
@@ -26,13 +27,15 @@ public class RecyclerViewAdapterLocalFavs extends RecyclerView.Adapter<RecyclerV
     private ArrayList<String> mRestaurantName = new ArrayList<>();
     private ArrayList<String> mRestaurantImage = new ArrayList<>();
     private ListMultimap<String, String> mCuisineTags = ArrayListMultimap.create();
+    private HashMap<String, Double> mRatings = new HashMap<String, Double>();
     private Context mContext;
 
 
-    public RecyclerViewAdapterLocalFavs(ArrayList<String> lrestauranttext, ArrayList<String> lrestaurantimage, Context context, ListMultimap<String, String> cuisineTags){
+    public RecyclerViewAdapterLocalFavs(ArrayList<String> lrestauranttext, ArrayList<String> lrestaurantimage, Context context, ListMultimap<String, String> cuisineTags, HashMap<String, Double> Ratings){
         mRestaurantImage = lrestaurantimage;
         mRestaurantName = lrestauranttext;
         mCuisineTags = cuisineTags;
+        mRatings = Ratings;
         mContext = context;
 
     }
@@ -59,6 +62,13 @@ public class RecyclerViewAdapterLocalFavs extends RecyclerView.Adapter<RecyclerV
 
 
         holder.restauranttext.setText(mRestaurantName.get(position));
+
+        double currentRating = mRatings.get(mRestaurantName.get(position));
+
+        String mRating = String.valueOf(currentRating) + " ☆";
+
+        holder.restaurant_ratings.setText(mRating);
+
 
         //gets tags from the listmap
         String selectedCuisine = mRestaurantName.get(position);
@@ -91,7 +101,7 @@ public class RecyclerViewAdapterLocalFavs extends RecyclerView.Adapter<RecyclerV
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView restaurantimage;
-        TextView restauranttext, restaurant_tags;
+        TextView restauranttext, restaurant_tags, restaurant_ratings;
         ConstraintLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -101,6 +111,7 @@ public class RecyclerViewAdapterLocalFavs extends RecyclerView.Adapter<RecyclerV
             restauranttext = itemView.findViewById(R.id.restaurant_name);
             parent_layout = itemView.findViewById(R.id.parent_layout);
             restaurant_tags = itemView.findViewById(R.id.tags);
+            restaurant_ratings = itemView.findViewById(R.id.ratings);
 
         }
     }

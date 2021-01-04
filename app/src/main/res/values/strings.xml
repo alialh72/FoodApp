@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">FoodApp</string>
+    <string name="app_name">Food App</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="signuphere">Sign Up Here</string>
+    <string name="signup">Sign Up</string>
+    <string name="fullname">Full Name</string>
+    <string name="email">Email</string>
+    <string name="loginhere">Login Here</string>
 </resources>

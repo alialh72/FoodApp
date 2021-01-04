@@ -105,7 +105,7 @@ tools:context=".MainActivity">
                 app:layout_constraintTop_toBottomOf="@id/cardView" />
 
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -118,16 +118,10 @@ tools:context=".MainActivity">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cuisine Type"
-                    android:layout_marginRight="10dp"
-                     />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/dot2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="•"
-                    android:layout_marginRight="10dp"
-                    />
 
                 <TextView
                     android:id="@+id/Rating"
@@ -135,23 +129,29 @@ tools:context=".MainActivity">
                     android:layout_height="wrap_content"
                     android:text="Rating"
                     android:layout_marginRight="10dp"
-                     />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/dot1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/dot1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="•"
                     android:layout_marginRight="10dp"
-                    />
+
+                    android:text="•"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/PriceRange"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/PriceRange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$$"
-                   />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

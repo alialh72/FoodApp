@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //booleans
-    private boolean loggedin;
+    private boolean loggedin = false;
 
     //arrays and maps
     private ArrayList<String> mCuisineText = new ArrayList<>();
@@ -72,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
     private HashMap<String, Double> Ratings = new HashMap<String, Double>();
     private HashMap<String, Integer> PriceRange = new HashMap<String, Integer>();
+
+    private ListMultimap<String, String> MenuList = ArrayListMultimap.create();
+    private ListMultimap<String, Integer> FoodCategory = ArrayListMultimap.create();
+    private ListMultimap<String, Integer> RestFood = ArrayListMultimap.create();
+    private ListMultimap<Integer, String> FoodId = ArrayListMultimap.create();
+
 
     private ListMultimap<String, String> CuisineTags = ArrayListMultimap.create();
     private ListMultimap<String, String> ReverseCuisines = ArrayListMultimap.create();
@@ -218,8 +224,9 @@ public class MainActivity extends AppCompatActivity {
                     String[] data = new String[1];
                     data[0] = username;
 
-
-                    PutData putData = new PutData("http://192.168.1.76/FoodAppLogin/getinfo.php", "POST", field, data);
+                    //set the url to http://23.16.93.156:10013//FoodAppLogin/getinfo.php if accessing from a location outside of alis localhost
+                    //it might already be set as the ip above, if so just leave it alone
+                    PutData putData = new PutData("http://192.168.1.76:10013//FoodAppLogin/getinfo.php", "POST", field, data);
                     if (putData.startPut()) {
                         if (putData.onComplete()) {
                             String result = putData.getResult();
@@ -301,6 +308,11 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Sushi Counter", 2);
 
+        MenuList.put("Sushi Counter", "Starters");
+        MenuList.put("Sushi Counter", "Mains");
+        MenuList.put("Sushi Counter", "Sushi");
+        MenuList.put("Sushi Counter", "Dessert");
+
         //-----------------------------
 
         mRestaurantImages.add("https://imgur.com/1rcwTbY.jpg");
@@ -312,6 +324,10 @@ public class MainActivity extends AppCompatActivity {
         Ratings.put("Olivier's Bistro", 4.7);
 
         PriceRange.put("Olivier's Bistro", 3);
+
+        MenuList.put("Olivier's Bistro", "Starters");
+        MenuList.put("Olivier's Bistro", "Mains");
+        MenuList.put("Olivier's Bistro", "Desserts");
 
         //-----------------------------
 
@@ -326,6 +342,9 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Salt Burger", 1);
 
+        MenuList.put("Salt Burger", "Burgers");
+        MenuList.put("Salt Burger", "Mains");
+
         //-----------------------------
 
         mRestaurantImages.add("https://imgur.com/S55r8kF.jpg");
@@ -338,6 +357,10 @@ public class MainActivity extends AppCompatActivity {
         Ratings.put("Red Dragon", 3.5);
 
         PriceRange.put("Red Dragon", 1);
+
+        MenuList.put("Red Dragon", "Starters");
+        MenuList.put("Red Dragon", "Mains");
+        MenuList.put("Red Dragon", "Desserts");
 
         //-----------------------------
 
@@ -352,6 +375,10 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Basilico", 3);
 
+        MenuList.put("Basilico", "Starters");
+        MenuList.put("Basilico", "Mains");
+        MenuList.put("Basilico", "Pizza");
+
         //-----------------------------
 
         mRestaurantImages.add("https://imgur.com/IB0U9LQ.jpg");
@@ -364,6 +391,10 @@ public class MainActivity extends AppCompatActivity {
         Ratings.put("Tolden Wings", 4.2);
 
         PriceRange.put("Tolden Wings", 2);
+
+        MenuList.put("Tolden Wings", "Starters");
+        MenuList.put("Tolden Wings", "Wings");
+        MenuList.put("Tolden Wings", "Burgers");
 
         //-----------------------------
 
@@ -379,6 +410,9 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Think Noodles", 1);
 
+        MenuList.put("Think Noodles", "Tapas");
+        MenuList.put("Think Noodles", "Ramen");
+
         //-----------------------------
 
         mRestaurantImages.add("https://imgur.com/GnPPlNm.jpg");
@@ -386,10 +420,16 @@ public class MainActivity extends AppCompatActivity {
 
         mRestaurantName.add("Hermanos");
         CuisineTags.put("Hermanos", "Mexican");
+        CuisineTags.put("Hermanos", "Burritos");
+        CuisineTags.put("Hermanos", "Tacos");
 
         Ratings.put("Hermanos", 4.3);
 
         PriceRange.put("Hermanos", 1);
+
+        MenuList.put("Hermanos", "Starters");
+        MenuList.put("Hermanos", "Mains");
+        MenuList.put("Hermanos", "Desserts");
 
         //-----------------------------
 
@@ -398,10 +438,16 @@ public class MainActivity extends AppCompatActivity {
 
         mRestaurantName.add("Tequila & Tacos");
         CuisineTags.put("Tequila & Tacos", "Mexican");
+        CuisineTags.put("Tequila & Tacos", "Tacos");
 
         Ratings.put("Tequila & Tacos", 4.1);
 
         PriceRange.put("Tequila & Tacos", 3);
+
+        MenuList.put("Tequila & Tacos", "Starters");
+        MenuList.put("Tequila & Tacos", "Mains");
+        MenuList.put("Tequila & Tacos", "Desserts");
+        MenuList.put("Tequila & Tacos", "Drinks");
 
         //-----------------------------
 
@@ -416,6 +462,8 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Mamma Mia!", 2);
 
+        MenuList.put("Mamma Mia!", "Pizza");
+
         //-----------------------------
 
         mRestaurantImages.add("https://imgur.com/ogmitVa.jpg");
@@ -427,6 +475,10 @@ public class MainActivity extends AppCompatActivity {
         Ratings.put("Falafel Beirut", 4.9);
 
         PriceRange.put("Falafel Beirut", 2);
+
+        MenuList.put("Falafel Beirut", "Starters");
+        MenuList.put("Falafel Beirut", "Mains");
+        MenuList.put("Falafel Beirut", "Shawarma");
 
         //-----------------------------
 
@@ -440,6 +492,9 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Amo Shawarma", 2);
 
+        MenuList.put("Amo Shawarma", "Sides");
+        MenuList.put("Amo Shawarma", "Shawarma");
+
         //-----------------------------
 
         mRestaurantImages.add("https://imgur.com/kkin29T.jpg");
@@ -452,6 +507,9 @@ public class MainActivity extends AppCompatActivity {
         Ratings.put("CHKN", 1.9);
 
         PriceRange.put("CHKN", 1);
+
+        MenuList.put("CHKN", "Burgers");
+        MenuList.put("CHKN", "Sides");
 
         //Generates 2 lists for the main menu
 
@@ -526,8 +584,9 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("RESTAURANT_NAME", CurrentRestaurantName);
         intent.putExtra("RESTAURANT_IMAGE", CurrentRestaurantImage);
         intent.putExtra("CUISINETAGS",(Serializable) CuisineTags);
+        intent.putExtra("MENULIST",(Serializable) MenuList);
 
-        getRatingPrice();
+        getVars();
 
         intent.putExtra("RATINGS",currentRating);
         intent.putExtra("PRICE",currentPrice);
@@ -535,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "openRestaurantPage: new intent has been started");
     }
 
-    private void getRatingPrice(){
+    private void getVars(){
         currentRating = Ratings.get(CurrentRestaurantName);
         currentPrice = PriceRange.get(CurrentRestaurantName);
     }

@@ -23,67 +23,78 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
+                android:id="@+id/constraintLayout12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/navbar_border"
-                android:orientation="horizontal"
+                android:layout_height="190dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="50dp"
+                >
 
-
-                <include
-                    layout="@layout/main_toolbar"
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:id="@+id/imageBackground"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:gravity="center"
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="#909090"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-                <TextView
-                    android:id="@+id/textView3"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:text="TextView"
-                    android:textSize="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <SearchView
-                    android:id="@+id/RestaurantSearch"
-                    android:layout_width="300dp"
-                    android:layout_height="30dp"
-                    android:queryHint="Search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome, "
+                        android:textColor="#f9b433"
+                        android:shadowColor="#30303030"
+                        android:shadowDx="5"
+                        android:shadowDy="5"
+                        android:shadowRadius="3"
+                        android:textSize="35dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="35dp"
+                        android:shadowColor="#30303030"
+                        android:shadowDx="5"
+                        android:shadowDy="5"
+                        android:shadowRadius="3"
+                        android:text="Guest"
+                        android:textColor="#F2A007"
+                        android:textStyle="bold"/>
+
+
+                </LinearLayout>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cuisinelist"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout12" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
@@ -111,6 +122,7 @@
                     android:text="Local Favorites"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    android:textColor="#F27507"
                     app:layout_constraintBottom_toTopOf="@+id/restaurantlist"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -144,6 +156,7 @@
                     android:layout_height="wrap_content"
                     android:text="Top Picks For You"
                     android:textSize="20dp"
+                    android:textColor="#F27507"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/restaurantlist2"
                     app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +172,7 @@
                 android:layout_marginTop="50dp"
 
                 android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/constraintLayout5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
@@ -219,8 +232,9 @@
                     android:id="@+id/cuisinerestaurantlist"
                     android:layout_width="200dp"
                     android:layout_height="190dp"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="65dp"
                     android:orientation="vertical"
+                    android:layout_marginBottom="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cardView2"
@@ -228,11 +242,46 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout5">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/restaurantlist3"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Restaurant List"
+                    android:textColor="#F27507"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/restaurantlist3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+
 
     <RelativeLayout
         android:layout_width="300dp"
@@ -243,6 +292,28 @@
             <include layout="@layout/main_nav_drawer"/>
 
     </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <include
+            layout="@layout/main_toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 

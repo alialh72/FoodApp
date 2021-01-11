@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.example.foodapp.MainActivity;
 import com.example.foodapp.R;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAdapterMain.ViewHolder>{
@@ -53,9 +55,9 @@ public class RecyclerViewAdapterMain extends RecyclerView.Adapter<RecyclerViewAd
                 .load(mRestaurantImage.get(position))
                 .into(holder.restaurantimage);
 
+        String line = StringUtils.abbreviate(mRestaurantName.get(position), 13);
 
-
-        holder.restauranttext.setText(mRestaurantName.get(position));
+        holder.restauranttext.setText(line);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

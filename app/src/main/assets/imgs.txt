@@ -1,0 +1,173 @@
+0;Spicy Edamame;Sushi Counter;Starters;5.50;https://littlehousebigalaska.com/wp-content/uploads/2017/10/Spicy-Edamame-Recipe-1-720x540.jpg;Edamame that is spicy
+1;Gyoza;Sushi Counter;Starters;6.75;https://static01.nyt.com/images/2019/09/16/dining/kwr-gyoza/merlin_160427046_9e2ab11e-f937-4f2e-a268-4f46b8480c73-articleLarge.jpg;Very tasty gyoza
+2;Shumai;Sushi Counter;Starters;6.75;https://healthynibblesandbits.com/wp-content/uploads/2019/05/Cantonese-Shumai-FF2.jpg;Very good shumai
+
+24;Chicken Katsu Curry;Sushi Counter;Mains;12.25;https://images.japancentre.com/recipes/pics/301/main/301_Chicken_Katsu_Curry.jpg?1469573012;Katsu curry with chicken
+25;Beef Teriyaki;Sushi Counter;Mains;15.50;https://food.fnr.sndimg.com/content/dam/images/food/fullset/2016/12/4/0/WU1506H_teriyaki-beef-stir-fry_s4x3.jpg.rend.hgtvcom.826.620.suffix/1480899699382.jpeg;Beef in teriyaki sauce
+26;Prawn Raisukaree;Sushi Counter;Mains;14.50;https://lh3.googleusercontent.com/proxy/5TnYMzTW0ijwFgrqvV4JoNLoDkLR-1mqisQeec6hMEx3if5DDCT4d4ikgtrjVN0XnmpgSGc70_QCubQLs5AG2VNdCRbuvf7OjcHmHO9zhG4e3cOfditVlBmv_4sztO9GtqO3upVkBUT0;Raisukaree with prawn
+27;Yasai Katsu Curry;Sushi Counter;Mains;12.75;https://nothingrandom.com/img/food/yasai-katsu-curry.jpg;Katsu curry with sweet potato and aubergine
+
+65;Avocado Maki;Sushi Counter;Sushi;4.50;https://images.eatsmarter.com/sites/default/files/styles/1600x1200/public/maki-sushi-filled-with-avocado-563370.jpg;Sushi that has avocado
+66;Crunchy California Roll;Sushi Counter;Sushi;5.50;https://i.pinimg.com/originals/18/65/09/1865093db7dafdab39dc5c6d868dda62.jpg;California roll with crunchy tempura flakes
+67;Dynamite Roll;Sushi Counter;Sushi;5.50;https://di-cdn.sfo2.digitaloceanspaces.com/product_images/5/533_4c6b1844915d6f62f4af80a44f180e9e.jpg;Prawn tempura, masago and avocado
+68;Yasai Roll;Sushi Counter;Sushi;5.50;https://di-cdn.sfo2.digitaloceanspaces.com/cdn/533_70a6f2476b585e0f0e73e9afcc5c6d2c.jpg;Inari, avocado, cucumber, romaine lettuce
+
+54;Mochi;Sushi Counter;Dessert;4.75;https://www.justonecookbook.com/wp-content/uploads/2020/08/Mochi-Ice-Cream-8680-I.jpg;Japanese rice cake
+55;Taiyaki;Sushi Counter;Dessert;3.75;https://tarasmulticulturaltable.com/wp-content/uploads/2019/02/Nutella-Taiyaki-7-of-8.jpg;Japanese fish-shaped cake
+
+
+
+3;French Onion Soup;Olivier's Bistro;Starters;10.50;https://www.onceuponachef.com/images/2019/01/French-Onion-Soup.jpg;Traditional french onion soup
+4;Escargots Bourguignonne;Olivier's Bistro;Starters;10.75;https://www.toutlevin.com/img/228e5d511f2893f9f454cc014a7ad5c0-960.jpg;Escargots with garlic-herb sauce
+5;Salade Nicoise;Olivier's Bistro;Starters;9.50;https://assets.afcdn.com/recipe/20190704/94687_w1024h1024c1cx3008cy2008.webp;Tomatoes, hard-boiled egg, Nicoise olives and anchovies
+
+28;Beef Bourguignon;Olivier's Bistro;Mains;22.50;https://www.foodiecrush.com/wp-content/uploads/2018/11/Beef-Bourguignon-foodiecrush.com-034.jpg;Beef braised in red wine and stock
+29;Braised Lamb Shoulder;Olivier's Bistro;Mains;27.50;https://andrewzimmern.com/wp-content/uploads/Braised-Lamb1-1600x800.jpg;Very tender slow-cooked lamb shoulder
+30;Croque Monsieur;Olivier's Bistro;Mains;18.50;https://d2wtgwi3o396m5.cloudfront.net/recipe/0e219b28-4f4f-4ea3-a6bb-029b0625d63e.jpg?d=1408x1120;Hot sandwich with ham and cheese
+31;Moules Marinieres;Olivier's Bistro;Mains;25.75;https://images.immediate.co.uk/production/volatile/sites/2/2018/02/moules_charlie-richards-4a780e0.jpg?quality=90&resize=960%2C408;Delicious mussels
+
+56;Crème Brûlée;Olivier's Bistro;Desserts;12.50;https://www.livewellbakeoften.com/wp-content/uploads/2019/02/Homemade-Creme-Brulee-9.jpg;Traditional Crème Brûlée
+57;Chocolate Tart;Olivier's Bistro;Desserts;10.25;https://livforcake.com/wp-content/uploads/2017/01/chocolate-ganache-tart-5.jpg;Slice of a chocolate tart
+58;Rhubarb Tart;Olivier's Bistro;Desserts;10.25;https://www.davidlebovitz.com/wp-content/uploads/2018/06/Strawberry-Rhubarb-tart-crostata-galette-recipe-7.jpg;Slice of a rhubarb tart
+
+
+
+32;Cajun Chicken Wrap;Salt Burger;Mains;10.25;https://www.safefood.net/getmedia/b280f55c-0a68-4c5f-b595-5157a958ea29/Cajun-Chicken-Wrap_2.JPG?width=4288&height=2848&ext=.jpg;Grilled cajun chicken with lettuce and house-made mayo
+33;Fish & Chips;Salt Burger;Mains;10.50;https://www.thespruceeats.com/thmb/-Hq2aVGdlH43SB1R-A7UK2dCb6k=/1500x844/smart/filters:no_upscale()/best-fish-and-chips-recipe-434856-Hero-5b61b89346e0fb00500f2141.jpg;Deep-fried beer batter cod & chips
+34;Mac & Cheese;Salt Burger;Mains;10.75;https://s23209.pcdn.co/wp-content/uploads/2019/02/Baked-Mac-and-CheeseIMG_8527.jpg;Oven-baked macaroni with cheese
+35;Pulled Beef Sandwich;Salt Burger;Mains;11.25;https://www.rachaelraymag.com/.image/t_share/MTQ3NzM1NTE1NTk5MjE4NjEw/pulled-bbq-beef-sandwiches.jpg;Tender, pulled beef with coleslaw
+36;Caesar Salad;Salt Burger;Mains;9.25;https://www.fifteenspatulas.com/wp-content/uploads/2011/10/Caesar-Salad-Fifteen-Spatulas-3-500x375.jpg;Salad made by Caesar
+
+75;California Burger;Salt Burger;Burgers;15.50;https://www.lecremedelacrumb.com/wp-content/uploads/2017/05/california-club-burger-107-1.jpg;Beef burger with avocado, tomato, dill and house-made aioli
+76;American Burger;Salt Burger;Burgers;15.50;https://carnaldish.com/wp-content/uploads/2018/06/smashburger18.jpg;Double patty smashburger with American cheese and our signature special sauce
+77;Nashville Hot Chicken Sandwich;Salt Burger;Burgers;16.50;https://img.buzzfeed.com/video-api-prod/assets/f20aea9f52ac4139b282d9643d1f8186/Thumbjpg.jpg?output-format=auto&output-quality=auto;Spicy fried chicken straight outta nashville
+78;Buttermilk Fried Chicken Sandwich;Salt Burger;Burgers;15.50;https://i2.wp.com/bsugarmama.com/wp-content/uploads/2019/07/fried-chicken-sandwich-6.jpg?fit=940%2C627&ssl=1;Its fried chicken between 2 pieces of bread
+
+
+
+6;Spring Roll;Red Dragon;Starters;5.00;https://dinnerthendessert.com/wp-content/uploads/2018/08/Spring-Rolls.jpg;Very nice spring roll
+7;Deep Fried Wonton;Red Dragon;Starters;5.00;https://www.dinneratthezoo.com/wp-content/uploads/2019/09/fried-wonton-5.jpg;Its a wonton, but deep fried
+8;B.B.Q. Duck;Red Dragon;Starters;7.50;https://omnivorescookbook.com/wp-content/uploads/2017/05/1705_Chinese-Crispy-Duck-Breast_002.jpg;Delicious B.B.Q Duck
+9;Deep Fried Tofu;Red Dragon;Starters;5.00;https://karylskulinarykrusade.com/wp-content/uploads/2018/01/Pan-Fried-Tofu-Feature-2.jpg;Signature Tofu but deep fried
+
+37;Chicken Chow Mein;Red Dragon;Mains;10.50;https://food.fnr.sndimg.com/content/dam/images/food/fullset/2019/9/10/0/FNK_Chicken-Chow-Mein_H_s4x3.jpg.rend.hgtvcom.826.620.suffix/1568395006760.jpeg;Chow mein with chicken
+38;Fuzhou Fried Rice;Red Dragon;Mains;10.75;https://thewoksoflife.com/wp-content/uploads/2015/08/young-chow-fried-rice-7-500x399.jpg;Fried rice from the province of Fuzhou
+39;Shrimp Fried Rice;Red Dragon;Mains;11.50;https://www.lastingredient.com/wp-content/uploads/2019/09/shrimp-fried-rice5.jpg;Fried rice with shrimp
+40;B.B.Q. Pork Chop Suey;Red Dragon;Mains;10.00;https://static.onecms.io/wp-content/uploads/sites/19/2000/09/01/pork-chop-suey-ck-223394-x.jpg;Our signature Suey with B.B.Q pork chop
+41;Sweet & Sour Pork;Red Dragon;Mains;10.50;https://img.buzzfeed.com/thumbnailer-prod-us-east-1/aa2dffba333842628649b06c0aad70db/CUT2.jpg;Pork tossed in our sweet and sour sauce
+
+59;Coconut Sticky Rice Cake;Red Dragon;Desserts;4.50;https://jeanetteshealthyliving.com/wp-content/uploads/2013/02/Chinese-Coconut-Almond-Sticky-Rice-Cake.jpg;Traditional Sticky Rice Cake with Coconut
+60;Soy Milk Pudding;Red Dragon;Desserts;4.50;https://images.japancentre.com/recipes/pics/613/main/photo_Soy_Milk_Purin.jpg?1469573201;Pudding made from soy milk
+61;Red Bean Cake;Red Dragon;Desserts;4.50;https://i.pinimg.com/originals/21/9e/25/219e25ff60ffeeb4df4a2f2f4d22108f.jpg;Traditional cake made of red beans
+
+
+
+10;Zuppa di Pesce;Basilico;Starters;7.50;https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/vimdb/225014.jpg;Traditional seafood soup
+11;Calamari ai Ferri;Basilico;Starters;7.75;https://media-cdn.tripadvisor.com/media/photo-s/14/40/88/3e/calamari-ai-ferri.jpg;Grilled squid
+12;Caesar Salad;Basilico;Starters;7.25;https://www.seriouseats.com/recipes/images/2016/04/20131009-caesar-salad-food-lab-11-Edit.jpg;Salad made from daddy ceasar
+
+42;Linguine al Pomodoro;Basilico;Mains;11.50;https://www.cucchiaio.it/content/cucchiaio/it/ricette/2019/12/spaghetti-al-pomodoro/jcr:content/imagePreview.img10.jpg/1578586057329.jpg;House-made linguini with tomato sauce
+43;Spaghettini Carbonara;Basilico;Mains;13.50;https://static01.nyt.com/images/2018/08/10/dining/carbonara-horizontal/carbonara-horizontal-mediumThreeByTwo440.jpg;Carbonara pasta
+44;Seafood Cannelloni;Basilico;Mains;13.75;https://assets.epicurious.com/photos/560ea1657b55306961bff0c8/1:1/w_600%2Ch_600/107417.jpg;Cannelloni stuffed with seafood
+45;Spaghettini Bolognese;Basilico;Mains;12.50;https://www.errenskitchen.com/wp-content/uploads/2015/02/Quick-Easy-Spaghetti-Bolognese2-1.jpg;Honestly what do you think it is
+
+69;Margherita Pizza;Basilico;Pizza;15.50;https://glebekitchen.com/wp-content/uploads/2018/09/pizzamargheritatop.jpg;Please ive had to write 100 of these i cant do this anymore
+70;Funghi Pizza;Basilico;Pizza;15.50;https://www.acouplecooks.com/wp-content/uploads/2019/06/Mushroom-Pizza-with-Herbs-011-800x1000.jpg;Pizza with mushrooms
+71;Parma Pizza;Basilico;Pizza;15.50;https://media-cdn.tripadvisor.com/media/photo-s/0f/7f/9b/3c/pizza-parma.jpg;Pizza with prosciutto
+
+
+
+13;French Fries;Tolden Wings;Starters;5.75;https://static.toiimg.com/thumb/54659021.cms?width=1200&height=900;Deep-fried potatoes
+14;Mozzarella Sticks;Tolden Wings;Starters;6.75;https://www.dinneratthezoo.com/wp-content/uploads/2019/12/mozzarella-sticks-4.jpg;Deep-fried mozzarella
+15;Sliders;Tolden Wings;Starters;8.75;https://atlasrestaurant.com/wp-content/uploads/2014/12/TavernAtlas-Sliders-3.jpg;3 beef sliders
+16;Chips and Salsa;Tolden Wings;Starters;5.50;https://food.fnr.sndimg.com/content/dam/images/food/fullset/2013/12/9/0/FNK_Salsa-and-Chips_s4x3.jpg.rend.hgtvcom.826.620.suffix/1387411410179.jpeg;Salsa and Chips
+
+86;Traditional Wings;Tolden Wings;Wings;12.50;https://jesspryles.com/wp-content/uploads/2020/01/smoked-chicken-wings-46-1440x900.jpg;6 wings tossed in one of our house-made sauces
+87;Boneless Wings;Tolden Wings;Wings;12.50;https://www.macheesmo.com/wp-content/uploads/2017/01/Real-Boneless-Wings-Featire.jpg;5 boneless wings tossed in one of our house-made sauces
+
+79;Traditional Burger;Tolden Wings;Burgers;12.75;https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-4-500x500.jpg;Tavern-style beef burger
+80;Chicken Burger;Tolden Wings;Burgers;12.75;https://img-global.cpcdn.com/recipes/c00f554d5bb15889/1200x630cq70/photo.jpg;Grilled chicken burger
+
+
+88;Chicken Karaage;Think Noodles;Tapas;3.5;https://static01.nyt.com/images/2018/07/25/dining/HK-karaage-horizontal/merlin_141075300_74569dec-9fc2-4174-931d-019dddef3bb8-articleLarge.jpg;Japanese-style fried chicken
+89;Cauliflower Karaage;Think Noodles;Tapas;3.75;https://lh3.googleusercontent.com/proxy/jArvDQWMioxU1-ywMpAKXbprVYCHoM7JWdGPM8ZV6Q9BxwPmjoj54P8nKN6YInIdxewd6S06ZFWr-VM5QqUjpMd_7cH6x87LMKe7zkpGgn4O78Z6I59C;Deep-fried cauliflower
+90;Chicken Gyoza;Think Noodles;Tapas;3.75;https://www.wandercooks.com/wp-content/uploads/2020/12/japanese-gyoza-dumplings-recipe-6.jpg;A type of dumpling stuffed with ground chicken
+
+91;Miso Ramen;Think Noodles;Ramen;8.75;https://steamykitchen.com/wp-content/uploads/2011/04/miso-ramen-recipe-feature-20912.jpg;Ramen with miso
+92;Chicken Ramen;Think Noodles;Ramen;10.75;https://www.theflavorbender.com/wp-content/uploads/2019/01/Easy-Chicken-Ramen-Featured.jpg;Ramen with chicken
+93;Shoyu Ramen;Think Noodles;Ramen;10.75;https://assets.bonappetit.com/photos/57ae038653e63daf11a4e122/16:9/w_1280;c_limit/shoyu-ramen.jpg;Ramen with shoyu
+94;Spicy Miso Ramen;Think Noodles;Ramen;10.25;https://images.food52.com/7xlEM6vStZtB5PDHCZQXMSuNWo0=/1200x900/c0169432-fdef-4a4c-89f6-fc15c2ba41db--spicy-miso-ramen30.jpg;Ramen with miso but spicy
+95;Shmiso Vegetarian Ramen;Think Noodles;Ramen;9.50;https://i.pinimg.com/600x315/f5/95/d8/f595d8a445c29131ea42eee6734a32d3.jpg;Ramen but vegetarian
+
+
+
+17;Guacamole;Hermanos;Starters;3.50;https://www.simplyrecipes.com/wp-content/uploads/2018/07/Guacamole-LEAD-2.jpg;May contain avocados
+18;Chili Cheese Nachos;Hermanos;Starters;5.50;https://iambaker.net/wp-content/uploads/2019/07/chili-cheese-nacho-final.jpg;Nachos with cheese and chili on top
+19;Mini Tostadas;Hermanos;Starters;3.75;https://mommyshomecooking.com/wp-content/uploads/2016/07/Chimichurri-Shrimp-and-Avocado-Mini-Tostadas-5.jpg;Tostadas but mini
+
+46;Double Tacos;Hermanos;Mains;7.50;https://www.thewholesomedish.com/wp-content/uploads/2019/06/The-Best-Classic-Tacos-1.jpg;Tacos but 2 of them
+47;Carne Asada;Hermanos;Mains;10.50;https://cafedelites.com/wp-content/uploads/2018/05/Carne-Asada-IMAGE-303.jpg;Grilled skirt steak, is very tasty
+48;Make Your Own Burrito;Hermanos;Mains;7.25;https://topsecretrecipes.com/images/product/chipotle-barbacoa-burrito-copycat-recipe-02.jpg;You can make your own burrito
+49;Alambre;Hermanos;Mains;7.50;https://i1.wp.com/sanpasqualskitchen.com/wp-content/uploads/2020/10/TacosdeAlambre1398.jpg?fit=550%2C550&ssl=1;Grilled beef topped with chopped bacon, bell peppers, onions, cheese and salsa
+
+62;Churros;Hermanos;Desserts;5.25;https://www.recipetineats.com/wp-content/uploads/2016/08/Churros_9-SQ.jpg;Fried dough pastry, served with either nutella or dulce de leche
+63;Tres Leches Cake;Hermanos;Desserts;5.50;https://tastesbetterfromscratch.com/wp-content/uploads/2017/04/Tres-Leches-Cake-4.jpg;A mexican sponge cake
+64;Sopaipillas;Hermanos;Desserts;5.75;https://tmbidigitalassetsazure.blob.core.windows.net/rms3-prod/attachments/37/1200x1200/Sopaipillas_EXPS_GBDBZ20_653_B01_09_7b.jpg;Fried pastry dessert
+
+
+
+72;Small Cheese Pizza;Mamma Mia!;Pizza;10.50;https://images.happycow.net/venues/500/70/02/hcmp70024_177713.jpeg;Cheese pizza, is small
+73;Medium Cheese Pizza;Mamma Mia!;Pizza;12.50;https://s3-media0.fl.yelpcdn.com/bphoto/LWvHN8SAsQMHDype4c1fYQ/o.jpg;Cheese pizza; is medium size
+74;Large Cheese Pizza;Mamma Mia!;Pizza;14.50;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzGqQqvjDwpUrDhvyMe-vIySSX1R2-JFQwBw&usqp=CAU;Cheese pizza; is large
+
+
+
+20;Cheese Manakesh;Falafel Beirut;Starters;7.25;https://images.deliveryhero.io/image/talabat/MenuItems/Jebneh_636321628033967423.jpg;Its like an arabic pizza, has cheese
+21;Zaatar Manakesh;Falafel Beirut;Starters;6.75;https://images.deliveryhero.io/image/talabat/MenuItems/Zaatar_636321628036311355.jpg;Same as the cheese manakesh, except zaatar instead of cheese
+22;Hummus;Falafel Beirut;Starters;5.50;https://feelgoodfoodie.net/wp-content/uploads/2018/06/Best-Hummus-10-500x500.jpg;Mashed chickpeas with tahini and other stuff
+23;Baba Ghanouj;Falafel Beirut;Starters;5.50;https://toriavey.com/images/2011/06/MG_0464-1-720x960.jpg;Like hummus, except eggplant instead of chickpeas
+
+50;Falafel Wrap;Falafel Beirut;Mains;11.50;https://thelemonbowl.com/wp-content/uploads/2020/09/Falafel-Pita-Wrap.jpg;Falafel inside a wrap with tomatoes, tahini and lettuce
+51;Stuffed Lamb;Falafel Beirut;Mains;17.50;https://food.fnr.sndimg.com/content/dam/images/food/fullset/2019/6/25/0/DV3007_Ouzi-Lamb_s4x3.jpg.rend.hgtvcom.826.620.suffix/1561587796424.jpeg;Slow-cooked stuffed lamb with rice
+52;Lamb Biryani;Falafel Beirut;Mains;14.50;https://irepo.primecp.com/2016/03/269699/recipe-24953_ExtraLarge1000_ID-1530365.jpg?v=1530365;Authentic lamb biryani
+53;Chicken Biryani;Falafel Beirut;Mains;14.50;https://static.toiimg.com/thumb/54308405.cms?imgsize=510571&width=800&height=800;Authentic chicken biryani
+
+96;Beef Shawarma;Falafel Beirut;Shawarma;9.75;https://cookingtheglobe.com/wp-content/uploads/2016/07/beef-shawarma.jpg;Shawarma containing beef
+97;Chicken Shawarma;Falafel Beirut;Shawarma;9.75;https://www.recipetineats.com/wp-content/uploads/2014/12/Chicken-Shawarma_5.jpg;Shawarma containing chicken
+
+
+
+81;Buttermilk Chicken Burger;CHKN;Burgers;12.50;https://myfoodbook.com.au/sites/default/files/styles/single_recipe/public/recipe_photo/160506_Lillydale_StreetFoodaAtHome_ButtermilkFriedChickenBurger_89910.jpg;Buttermilk fried chicken between 2 pieces of bread and some sauce
+82;Cheese Burger;CHKN;Burgers;12.25;https://assets.epicurious.com/photos/5c745a108918ee7ab68daf79/master/pass/Smashburger-recipe-120219.jpg;Very tasty cheeseburger
+83;Nashville Hot Chicken;CHKN;Burgers;12.75;https://grandbaby-cakes.com/wp-content/uploads/2014/10/Nashville-Hot-Chicken-Recipe-1.jpg;Authentic nashville hot chicken
+84;Beyond Burger;CHKN;Burgers;13.75;https://i.insider.com/5ccc4be5021b4c010b4cf0b3?width=1200&format=jpeg;Burger made with a beyond meat patty (is vegan)
+85;Chicken Sando;CHKN;Burgers;12.50;https://images.immediate.co.uk/production/volatile/sites/2/2020/02/Coronation-Chicken-Sandwich-af55422-scaled.jpg?quality=90&crop=4px%2C1124px%2C2133px%2C918px&resize=960%2C408;Chicken cutlet sandwich
+
+98;Chicken Tenders;CHKN;Sides;6.75;https://images-gmi-pmc.edge-generalmills.com/3973d54d-0004-4c06-a9d1-0843f3bf3efa.jpg;Breaded chicken fillet
+99;French Fries;CHKN;Sides;5.50;https://www.alisonspantry.com/uploads/new-products/1120-1.jpg;Potatoes fried to chips
+100;Poutine;CHKN;Sides;6.50;https://www.seasonsandsuppers.ca/wp-content/uploads/2014/01/new-poutine-1.jpg;Canada's national dish
+
+
+101;Guacamole;Tequila & Tacos;Starters;6.50;https://www.vitamix.com/media/other/images/500xNxGuacamole-470x449.jpg.pagespeed.ic.Cg_FTq7NU-.jpg;May contain avocados
+102;Chicken & Cheese Quesadilla;Tequila & Tacos;Starters;7.75;https://skinnyms.com/wp-content/uploads/2015/02/Easy-Chicken-Cheese-Quesadillas-1-750x498.jpg;Delicious quesadilla containing grilled chicken and cheese
+103;Chile Con Queso;Tequila & Tacos;Starters;5.50;https://www.dorothylane.com/wp-content/uploads/2018/02/1860-1.jpg;Velvety smooth cheese dip
+
+104;Chicken Enchiladas;Tequila & Tacos;Mains;12.50;https://tastesbetterfromscratch.com/wp-content/uploads/2019/02/Chicken-Enchiladas-9-1.jpg;Corn tortilla rolled around a chicken-based filling, covered in our house-made enchilada sauce
+105;Beef Barabacoa Tacos;Tequila & Tacos;Mains;15.75;https://i.pinimg.com/originals/28/bc/c1/28bcc1649d5f8626904987c5c0558827.jpg;Tender, succulent, slow cooked beef inside one of our incredible corn taco shells
+106;Birria Tacos;Tequila & Tacos;Mains;12.25;https://keviniscooking.com/wp-content/uploads/2020/09/Birria-Tacos-square.jpg;Delicous pulled beef short rib with cheese, onions and cilantro inside one of our flour tortillas
+107;Chicken Tamales;Tequila & Tacos;Mains;15.25;https://tmbidigitalassetsazure.blob.core.windows.net/rms3-prod/attachments/37/1200x1200/Chicken-Tamales_EXPS_HC17_50905_C12_16_2b.jpg;Corn based masa wrapped around a chicken filling and steamed in a corn husk
+
+108;Churros;Tequila & Tacos;Desserts;6.25;https://www.biggerbolderbaking.com/wp-content/uploads/2015/04/BBB69-Churros-Chocolate-Thumbnail-v.1.jpg;Fried dough pastry, served with either nutella or dulce de leche
+109;Tres Leches Cake;Tequila & Tacos;Desserts;6.50;https://preppykitchen.com/wp-content/uploads/2019/04/Tres-Leches-Recipe4.jpg;A mexican sponge cake
+110;Sopaipillas;Tequila & Tacos;Desserts;5.75;https://tastesbetterfromscratch.com/wp-content/uploads/2020/02/Sopaipillas-6-500x500.jpg;Fried pastry dessert
+
+
+111;French Fries;Amo Shawarma;Sides;4.50;https://belquistwist.com/wp-content/uploads/2020/04/homemade-french-fries-1.jpg;I've already written what this is 3 times
+112;Tabbouleh;Amo Shawarma;Sides;4.75;https://i2.wp.com/colorfulrecipes.com/wp-content/uploads/2012/11/fresh-light-authentic-lebanese-tabbouleh-7.jpg?resize=1200%2C1800;Traditional Levantine salad made with parsley, tomatoes, mint, onion and bulgur, topped with our traditional salad dressing
+113;Fattoush;Amo Shawarma;Sides;4.75;https://www.archanaskitchen.com/images/archanaskitchen/World_Salads/Lebanese_Fattoush_Salad_Recipe-1.jpg;Tradional Levantine salad made from toasted or fried pieces of khubz combined with mixed greens and other vegetables
+
+114;Make Your Own Shawarma;Amo Shawarma;Shawarma;9.75;https://www.recipetineats.com/wp-content/uploads/2014/12/Chicken-Shawarma_5.jpg;Choose your protein, filling and sauce
+
+118;Coca Cola;Amo Shawarma;Drinks;1.50;https://i5.walmartimages.ca/images/Enlarge/246/069/6000200246069.jpg;12oz can of Coca Cola
+119;Pepsi;Amo Shawarma;Drinks;1.50;https://i.pinimg.com/originals/1b/63/14/1b631413ddaf8fd8acc7cb6cee78f713.jpg;12oz can of Pepsi
+120;Orange Juice;Amo Shawarma;Drinks;2.50;https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fassets.marthastewart.com%2Fstyles%2Fwmax-750%2Fd20%2Foj-upgrade-103121806%2Foj-upgrade-103121806_horiz_0.jpg%3Fitok%3DHQdK4qxB&q=85;Freshly squeezed orange juice

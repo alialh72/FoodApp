@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,11 +19,13 @@ import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 public class login extends AppCompatActivity {
 
+    private static final String TAG = "";
     TextInputEditText textInputEditTextUsername, textInputEditTextPassword;
     Button buttonLogin;
     TextView textViewSignUp, textView2;
     ProgressBar progressBar;
     private String currentUsername;
+    private boolean justlogged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,10 @@ public class login extends AppCompatActivity {
         textViewSignUp = findViewById(R.id.signUpText);
         progressBar = findViewById(R.id.progress);
         textView2 = findViewById(R.id.textView2);
+
+        if(getIntent().getExtras() != null){
+            justlogged = getIntent().getExtras().getBoolean("JUSTLOGGED");
+        }
 
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +97,7 @@ public class login extends AppCompatActivity {
 
                             //set the url to http://23.16.93.156:10013//FoodAppLogin/login.php if accessing from a location outside of alis localhost
                             //it might already be set as the ip above, if so just leave it alone
-                            PutData putData = new PutData("http://192.168.1.76:10013//FoodAppLogin/login.php", "POST", field, data);
+                            PutData putData = new PutData("http://192.168.1.85:10013//FoodAppLogin/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
@@ -100,9 +107,10 @@ public class login extends AppCompatActivity {
                                         Toast.makeText(login.this, result, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         intent.putExtra("USERNAME", currentUsername);
-
+                                        justlogged = false;
                                         boolean loggedin = true;
                                         intent.putExtra("LOGGEDIN", loggedin);
+                                        Log.d(TAG, "login: home page started");
                                         startActivity(intent);
                                         finish();
                                     }
@@ -128,5 +136,23 @@ public class login extends AppCompatActivity {
         });
 
 
+    }
+
+    public void ReturnHome(View view){
+        boolean loggedin = false;
+        justlogged = false;
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("LOGGEDIN", loggedin);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() { //disables the go back button on android when on the login page when accessed by signing out from a page other than main activity (because it breaks the app otherwise)
+        if (justlogged == true) {
+
+        } else {
+            super.onBackPressed();
+        }
     }
 }

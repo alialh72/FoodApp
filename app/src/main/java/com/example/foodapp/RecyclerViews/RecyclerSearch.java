@@ -1,7 +1,6 @@
 package com.example.foodapp.RecyclerViews;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,11 @@ import com.bumptech.glide.Glide;
 import com.example.foodapp.MainActivity;
 import com.example.foodapp.R;
 import com.example.foodapp.RestaurantPage;
+import com.example.foodapp.Search;
 
 import java.util.ArrayList;
 
-public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.ViewHolder>{
+public class RecyclerSearch extends RecyclerView.Adapter<RecyclerSearch.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<String> mRestaurantName = new ArrayList<>();
@@ -28,9 +28,9 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
     private Context mContext;
 
 
-    public RecyclerViewMenu(ArrayList<String> lrestauranttext, Context context){
+    public RecyclerSearch(ArrayList<String> lrestauranttext,ArrayList<String> lrestaurantimage , Context context){
         mRestaurantName = lrestauranttext;
-
+        mRestaurantImage = lrestaurantimage;
         mContext = context;
 
     }
@@ -38,7 +38,7 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_box, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
         return holder;
@@ -49,13 +49,18 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
 
         Log.d(TAG, "onBindViewHolder: called.");
 
+        Glide.with(mContext)
+                .asBitmap()
+                .load(mRestaurantImage.get(position))
+                .into(holder.restaurantimage);
+
+
         holder.restauranttext.setText(mRestaurantName.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mRestaurantName.get(position));
-                ((RestaurantPage)mContext).switcheroo(mRestaurantName.get(position));
-                //holder.restauranttext.setTextColor(Color.parseColor("#F2A007"));
+                ((Search)mContext).setRestaurant(mRestaurantName.get(position));
             }
         });
 
@@ -68,15 +73,23 @@ public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.View
         return mRestaurantName.size();
     }
 
+    public void filterList(ArrayList<String> filteredList, ArrayList<String> images){
+        mRestaurantName = filteredList;
+        mRestaurantImage = images;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView restauranttext;
+        ImageView restaurantimage;
         ConstraintLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            restauranttext = itemView.findViewById(R.id.MenuText);
+            restauranttext = itemView.findViewById(R.id.restaurant_name);
+            restaurantimage = itemView.findViewById(R.id.restaurant_image);
             parent_layout = itemView.findViewById(R.id.parent_layout);
 
         }

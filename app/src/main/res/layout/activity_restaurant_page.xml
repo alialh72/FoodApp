@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".MainActivity">
+tools:context=".MainActivity"
+    android:id="@+id/drawerLayout">
 
 
     <ScrollView
@@ -20,13 +21,12 @@ tools:context=".MainActivity">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="150px"
+                android:layout_height="wrap_content"
                 android:background="@drawable/navbar_border"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,38 +34,13 @@ tools:context=".MainActivity">
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="100px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:adjustViewBounds="true"
-                    android:gravity="center"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/menuicon" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="19dp"
-                    android:text="FoodApp"
-                    android:textSize="25dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <SearchView
-                    android:layout_width="190dp"
-                    android:layout_height="30dp"
-                    android:queryHint="Location"
+                <include
+                    layout="@layout/main_toolbar"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -133,6 +108,8 @@ tools:context=".MainActivity">
                     android:layout_marginRight="10dp"
                     android:text="Rating"
                     android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="#F2A007"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/dot1"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -154,6 +131,7 @@ tools:context=".MainActivity">
                     android:layout_height="wrap_content"
                     android:text="$$"
                     android:textSize="20dp"
+                    android:textColor="#F27507"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -177,7 +155,8 @@ tools:context=".MainActivity">
                     android:src="@drawable/ic_menu"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="#F27507" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/Menu"
@@ -190,11 +169,25 @@ tools:context=".MainActivity">
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:id="@+id/titlecategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Starters"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/Starters"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/titlecategory" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -202,4 +195,14 @@ tools:context=".MainActivity">
 
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white">
+
+        <include layout="@layout/main_nav_drawer"/>
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

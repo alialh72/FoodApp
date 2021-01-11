@@ -1,7 +1,9 @@
 package com.example.foodapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -10,11 +12,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,30 +42,48 @@ import com.google.common.collect.Multimaps;
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.Buffer;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     //------------vars--------------
+    private static final String TAG = "";
+
 
     //strings
     private String CurrentRestaurantName = "";
     private String CurrentRestaurantImage = "";
-
-    private String currentUsername, currentFullname, currentEmail;
-    private Double currentRating;
-    private Integer currentPrice;
     private String mResult;
+    private String currentUsername, currentFullname, currentEmail;
 
-    private static final String TAG = "";
-
+    //Integers and doubles
+    private Double currentRating;
+    private Integer currentPriceRange, currentPrice;
 
     //booleans
     private boolean loggedin = false;
 
-    //arrays and maps
+
+
+    //---------------ARRRAYSSSSS AND MAPSSSSSS
     private ArrayList<String> mCuisineText = new ArrayList<>();
     private ArrayList<String> mCuisineImages = new ArrayList<>();
 
@@ -72,21 +99,26 @@ public class MainActivity extends AppCompatActivity {
 
     private HashMap<String, Double> Ratings = new HashMap<String, Double>();
     private HashMap<String, Integer> PriceRange = new HashMap<String, Integer>();
-
     private ListMultimap<String, String> MenuList = ArrayListMultimap.create();
     private ListMultimap<String, Integer> FoodCategory = ArrayListMultimap.create();
     private ListMultimap<String, Integer> RestFood = ArrayListMultimap.create();
-    private ListMultimap<Integer, String> FoodId = ArrayListMultimap.create();
-
-
+    private HashMap<Integer, String> FoodId = new HashMap<Integer, String>();
+    private HashMap<Integer, String> FoodImgs = new HashMap<Integer, String>();
+    private HashMap<Integer, Double> FoodPrice = new HashMap<Integer, Double>();
+    private HashMap<Integer, String> FoodDescription = new HashMap<Integer, String>();
     private ListMultimap<String, String> CuisineTags = ArrayListMultimap.create();
     private ListMultimap<String, String> ReverseCuisines = ArrayListMultimap.create();
-
     private ArrayList<String> RandomRestaurant = new ArrayList<>();
     private ArrayList<String> RandomRestaurantImages = new ArrayList<>();
 
 
+
+    //Random Generator
     private Random generator = new Random();
+
+
+    //Object
+    public getInfo mGetInfo = new getInfo();
 
 
 
@@ -94,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchBar;
     private DrawerLayout drawerLayout;
     private TextView emailtext, usernametext, logintext;
+    private ImageView background;
+
 
 
 
@@ -101,62 +135,99 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        background = findViewById(R.id.imageBackground);
+
+        Glide.with(this)
+                .asBitmap()
+                .load("https://imgur.com/ODBDNkb.png")
+                .into(background);
+
         if(getIntent().getExtras() != null) {
-            currentUsername = getIntent().getStringExtra("USERNAME");
             loggedin = getIntent().getExtras().getBoolean("LOGGEDIN");
             Log.d(TAG, "onCreate: logged in: " + loggedin);
-            Log.d(TAG, "onCreate: USERNAME: " + currentUsername);
+
             if (loggedin == true){
-                mGet(currentUsername);
+                if(getIntent().getStringExtra("USERNAME") != null) {
+                    currentUsername = getIntent().getStringExtra("USERNAME");
+                    try {
+                        mGetInfo.mGet(currentUsername);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, "onCreate: currentUsername: " + Arrays.toString(mGetInfo.result));
+                    currentFullname = mGetInfo.result[0];
+                    currentEmail = mGetInfo.result[1];
+                    Log.d(TAG, "onCreate: Current Email: "+currentEmail);
+                }
             }
         }
 
 
         //assign xml
-        searchBar = findViewById(R.id.RestaurantSearch);
+        //searchBar = findViewById(R.id.RestaurantSearch);
         drawerLayout = findViewById(R.id.drawerLayout);
-        emailtext = findViewById(R.id.textView6);
+        emailtext = findViewById(R.id.emailfield);
         usernametext = findViewById(R.id.textView4);
         logintext = findViewById(R.id.login);
 
-        Log.d(TAG, "onCreate: result " + mResult);
 
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                if(loggedin == true){
-                    if (emailtext.getText() != currentEmail && usernametext.getText() != currentFullname){
-                        emailtext.setText(currentEmail);
-                        usernametext.setText(currentFullname);
-                    }
-                    logintext.setText("Sign Out");
-                }
-                else{
-                    emailtext.setText("");
-                    usernametext.setText("Guest");
-                    logintext.setText("Log In / Sign Up");
-                }
+                fixDrawer(loggedin);
+
             }
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) { }
 
             @Override
-            public void onDrawerClosed(@NonNull View drawerView) { }
+            public void onDrawerClosed(@NonNull View drawerView) {
+                fixDrawer(loggedin);
+
+            }
 
             @Override
             public void onDrawerStateChanged(int newState) { }
         });
 
+
+
+
         initImageBitmaps();
     }
 
-    public void ClickMenu(View view){
-        openDrawer(drawerLayout);
-        Log.d(TAG, "ClickMenu: testing " + mResult);
+    public void fixDrawer(boolean loggedin){
+        setLoggedin(loggedin);
+
+        if (loggedin == true){
+            if (emailtext.getText() != currentEmail && usernametext.getText() != currentFullname){
+                Log.d(TAG, "fixDrawer: current email: "+currentEmail);
+                usernametext.setText(currentFullname);
+                emailtext.setVisibility(View.VISIBLE);
+                emailtext.setText(currentEmail);
+            }
+            logintext.setText("Sign Out");
+        }
+        else if(loggedin == false){
+            emailtext.setText("");
+            emailtext.setVisibility(View.GONE);
+            usernametext.setText("Guest");
+            logintext.setText("Log In / Sign Up");
+        }
+    }
+
+    public void setLoggedin(boolean loggedin){
+        this.loggedin = loggedin;
     }
 
 
+    public void ClickMenu(View view){
+        openDrawer(drawerLayout);
+    }
 
     private void openDrawer(DrawerLayout drawerLayout) {
         drawerLayout.openDrawer(GravityCompat.START);
@@ -170,6 +241,14 @@ public class MainActivity extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+    }
+
+    public void ReturnHome(View view){
+        loggedin = false;
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("LOGGEDIN", loggedin);
+        startActivity(intent);
+        finish();
     }
 
     //nav drawer onclicks
@@ -190,9 +269,11 @@ public class MainActivity extends AppCompatActivity {
     public void LogIn(View view){
         Log.d(TAG, "Log In button clicked");
         if (loggedin == true){
-            loggedin = false;
+            fixDrawer(false);
             drawerLayout.closeDrawer(GravityCompat.START);
             Toast.makeText(this, "You have successfully signed out", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getBaseContext(), login.class);
+            startActivity(intent);
         }
         else{
             Intent intent = new Intent(getBaseContext(), login.class);
@@ -200,68 +281,26 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "login button: new intent has been started");
         }
 
-
-
-    }
+     }
 
     public void Click(View view){
         Log.d(TAG, "Clicked");
     }
-
-    private void mGet(String username){
-        if (!username.equals("")) {
-
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    //Starting Write and Read data with URL
-                    //Creating array for parameters
-                    String[] field = new String[1];
-                    field[0] = "username";
-
-                    //Creating array for data
-                    String[] data = new String[1];
-                    data[0] = username;
-
-                    //set the url to http://23.16.93.156:10013//FoodAppLogin/getinfo.php if accessing from a location outside of alis localhost
-                    //it might already be set as the ip above, if so just leave it alone
-                    PutData putData = new PutData("http://192.168.1.76:10013//FoodAppLogin/getinfo.php", "POST", field, data);
-                    if (putData.startPut()) {
-                        if (putData.onComplete()) {
-                            String result = putData.getResult();
-
-                            if (result.equals("Login Success")){
-                                Log.d(TAG, "run: how tf did this happen");
-                                Log.d(TAG, "run: result: "+ result);
-                            }
-
-                            else{
-                                mResult = result;
-                                String[] parts = mResult.split("-");
-                                currentFullname = parts[0];
-                                currentEmail = parts[1];
-                                Log.d(TAG, "run: mResult: " +mResult);
-
-                            }
-
-
-                        }
-                    }
-                }
-
-            });
-        }
-    }
-
-
-
 
     //recyclerview
     private void initImageBitmaps(){
 
 
         Log.d(TAG, "initImageBitmaps: preparing bitmaps");
+        RestaurantPage restaurantPage = new RestaurantPage();
+        Log.d(TAG, "initImageBitmaps: afterobject");
+        restaurantPage.getHashMapFromTextFile();
+        Log.d(TAG, "initImageBitmaps: aftermethod");
+        Log.d(TAG, "onCreate: mapfromfile Foodid: " + FoodId);
+        Log.d(TAG, "onCreate: RestFood: " + RestFood);
+        Log.d(TAG, "onCreate: FoodCategory: " + FoodCategory);
+
+
 
         //---------------------------List of Cuisines--------------------------
 
@@ -274,26 +313,33 @@ public class MainActivity extends AppCompatActivity {
         mCuisineText.add("Pizza");
 
         //Cuisine 3
-        mCuisineImages.add("https://imgur.com/uQAk85E.jpg");
+        mCuisineImages.add("https://static.toiimg.com/thumb/61589069.cms?width=1200&height=900");
         mCuisineText.add("Chicken");
 
         //Cuisine 4
-        mCuisineImages.add("https://imgur.com/uQAk85E.jpg");
+        mCuisineImages.add("https://static.onecms.io/wp-content/uploads/sites/35/2012/01/16184542/chinese-takeout-box_0.jpg");
         mCuisineText.add("Chinese");
 
         //Cuisine 5
-        mCuisineImages.add("https://imgur.com/uQAk85E.jpg");
+        mCuisineImages.add("https://hips.hearstapps.com/del.h-cdn.co/assets/17/15/1492181920-delish-sticky-orange-chicken-2.jpg");
         mCuisineText.add("Asian");
 
         //Cuisine 6
-        mCuisineImages.add("https://imgur.com/uQAk85E.jpg");
+        mCuisineImages.add("https://www.budgetbytes.com/wp-content/uploads/2013/07/Creamy-Spinach-Tomato-Pasta-bowl-500x375.jpg");
         mCuisineText.add("Italian");
 
         //cuisine 7
-        mCuisineImages.add("https://imgur.com/uQAk85E.jpg");
+        mCuisineImages.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf2fXC2aUbgbr0y5r-B9E-P-a32tFi9juksw&usqp=CAU");
         mCuisineText.add("Mexican");
 
 
+        //Total number of dishes:
+        //Food ids:
+        //0-23 : starter dishes
+        //24 - 53: main dishes
+        //54-64: desserts
+        //65-68: sushi
+        //69 - 74: pizza
 
         //-------------------------Restaurants---------------------------------------
 
@@ -320,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
 
         mRestaurantName.add("Olivier's Bistro");
         CuisineTags.put("Olivier's Bistro", "French");
+        CuisineTags.put("Olivier's Bistro", "European");
 
         Ratings.put("Olivier's Bistro", 4.7);
 
@@ -433,24 +480,6 @@ public class MainActivity extends AppCompatActivity {
 
         //-----------------------------
 
-        mRestaurantImages.add("https://imgur.com/5di0Vdd.jpg");
-        RestaurantImagesMap.put("Tequila & Tacos", "https://imgur.com/5di0Vdd.jpg");
-
-        mRestaurantName.add("Tequila & Tacos");
-        CuisineTags.put("Tequila & Tacos", "Mexican");
-        CuisineTags.put("Tequila & Tacos", "Tacos");
-
-        Ratings.put("Tequila & Tacos", 4.1);
-
-        PriceRange.put("Tequila & Tacos", 3);
-
-        MenuList.put("Tequila & Tacos", "Starters");
-        MenuList.put("Tequila & Tacos", "Mains");
-        MenuList.put("Tequila & Tacos", "Desserts");
-        MenuList.put("Tequila & Tacos", "Drinks");
-
-        //-----------------------------
-
         mRestaurantImages.add("https://imgur.com/nSIiI4J.jpg");
         RestaurantImagesMap.put("Mamma Mia!", "https://imgur.com/nSIiI4J.jpg");
 
@@ -492,8 +521,9 @@ public class MainActivity extends AppCompatActivity {
 
         PriceRange.put("Amo Shawarma", 2);
 
-        MenuList.put("Amo Shawarma", "Sides");
         MenuList.put("Amo Shawarma", "Shawarma");
+        MenuList.put("Amo Shawarma", "Sides");
+        MenuList.put("Amo Shawarma", "Drinks");
 
         //-----------------------------
 
@@ -510,6 +540,23 @@ public class MainActivity extends AppCompatActivity {
 
         MenuList.put("CHKN", "Burgers");
         MenuList.put("CHKN", "Sides");
+
+        //-----------------------------------
+
+        mRestaurantImages.add("https://3di9nx2pw3s1jibo2g8ef7wo-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/28364828246_933e432a4a_k-1-e1563468625653-1024x796.jpg");
+        RestaurantImagesMap.put("Tequila & Tacos", "https://3di9nx2pw3s1jibo2g8ef7wo-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/28364828246_933e432a4a_k-1-e1563468625653-1024x796.jpg");
+
+        mRestaurantName.add("Tequila & Tacos");
+        CuisineTags.put("Tequila & Tacos", "Mexican");
+        CuisineTags.put("Tequila & Tacos", "Tacos");
+
+        Ratings.put("Tequila & Tacos", 4.3);
+
+        PriceRange.put("Tequila & Tacos", 1);
+
+        MenuList.put("Tequila & Tacos", "Starters");
+        MenuList.put("Tequila & Tacos", "Mains");
+        MenuList.put("Tequila & Tacos", "Desserts");
 
         //Generates 2 lists for the main menu
 
@@ -531,9 +578,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initImageBitmaps: reversemap " + ReverseCuisines);
         Log.d(TAG, "initImageBitmaps: map "+CuisineTags);
 
-
+        Log.d(TAG, "initImageBitmaps: complete bitmaps");
         initRecyclerView();
-
     }
 
 
@@ -569,6 +615,11 @@ public class MainActivity extends AppCompatActivity {
         LocalrecyclerViewMain.setAdapter(LocalAdapter3);
         LocalrecyclerViewMain.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        Log.d(TAG, "initRecyclerView: init recyclerview locals");
+        RecyclerView LocalrecyclerView3 = findViewById(R.id.restaurantlist3);
+        LocalAdapter = new RecyclerViewAdapterLocalFavs(mRestaurantName, mRestaurantImages, this, CuisineTags, Ratings);
+        LocalrecyclerView3.setAdapter(LocalAdapter);
+        LocalrecyclerView3.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
     }
 
@@ -579,24 +630,31 @@ public class MainActivity extends AppCompatActivity {
         openRestaurantPage();
     }
 
-    private void openRestaurantPage(){
+    public void openRestaurantPage(){
         Intent intent = new Intent(getBaseContext(), RestaurantPage.class);
         intent.putExtra("RESTAURANT_NAME", CurrentRestaurantName);
         intent.putExtra("RESTAURANT_IMAGE", CurrentRestaurantImage);
         intent.putExtra("CUISINETAGS",(Serializable) CuisineTags);
         intent.putExtra("MENULIST",(Serializable) MenuList);
 
+        if (loggedin == true){
+            intent.putExtra("LOGGEDIN", loggedin);
+            intent.putExtra("USERNAME", currentUsername);
+        }
+
+
         getVars();
 
         intent.putExtra("RATINGS",currentRating);
-        intent.putExtra("PRICE",currentPrice);
+        intent.putExtra("PRICERANGE",currentPriceRange);
         startActivity(intent);
         Log.d(TAG, "openRestaurantPage: new intent has been started");
     }
 
+
     private void getVars(){
         currentRating = Ratings.get(CurrentRestaurantName);
-        currentPrice = PriceRange.get(CurrentRestaurantName);
+        currentPriceRange = PriceRange.get(CurrentRestaurantName);
     }
 
     private void randomCuisine(){
@@ -632,6 +690,29 @@ public class MainActivity extends AppCompatActivity {
                 .load(selectedImage)
                 .into(CuisineTypeImage);
 
+    }
+
+    @Override
+    public void onBackPressed() { } //disables the go back button on android when on the main page (because there is no where back to go)
+
+    public void SearchBar(View view){
+        Intent intent = new Intent(getBaseContext(), Search.class);
+        intent.putExtra("RESTAURANT_NAME", mRestaurantName);
+        intent.putExtra("RESTAURANT_IMAGE", RestaurantImagesMap);
+        intent.putExtra("CUISINETAGS",(Serializable) CuisineTags);
+        intent.putExtra("MENULIST",(Serializable) MenuList);
+
+        if (loggedin == true){
+            intent.putExtra("LOGGEDIN", loggedin);
+            intent.putExtra("USERNAME", currentUsername);
+        }
+
+        intent.putExtra("RATINGS",(Serializable) Ratings);
+        intent.putExtra("PRICERANGE",(Serializable) PriceRange);
+
+        startActivity(intent);
+
+        finish();
     }
 
 }

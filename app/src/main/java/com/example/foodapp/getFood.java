@@ -24,26 +24,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class getInfo {
+public class getFood {
 
     private static final String TAG = "";
-    private String mUsername;
-    private String mResult;
-
-    private String CurrentRestaurantName = "";
-    private String CurrentRestaurantImage = "";
-
     public String[] result;
-    private Integer currentPrice;
 
-    public void mGet(String username) throws ExecutionException, InterruptedException {
-        if (!username.equals("")) {
-            ExecutorService service = Executors.newFixedThreadPool(10);
 
-            Future<String[]> future = service.submit(new Task(username));
+    public String[] mGet(String username) throws ExecutionException, InterruptedException {
+        Log.d(TAG, "mGet: inside method");
+        ExecutorService service = Executors.newFixedThreadPool(10);
 
-            result = future.get(); //blocking operation
-        }
+        Future<String[]> future = service.submit(new Task(username));
+        result = future.get(); //blocking operation
+
+
+        return result;
     }
 
     static class Task implements Callable<String[]>{
@@ -53,11 +48,12 @@ public class getInfo {
             this.username = username;
         }
 
+
         @Override
         public String[] call() throws Exception{
             //Starting Write and Read data with URL
             //Creating array for parameters
-            String[] parts = new String[2];
+            String[] parts = new String[0];
 
             String[] field = new String[1];
             field[0] = "username";
@@ -66,9 +62,10 @@ public class getInfo {
             String[] data = new String[1];
             data[0] = username;
 
+
             //set the url to http://23.16.93.156:10013//FoodAppLogin/getinfo.php if accessing from a location outside of alis localhost
             //it might already be set as the ip above, if so just leave it alone
-            PutData putData = new PutData("http://192.168.1.85:10013//FoodAppLogin/getinfo.php", "POST", field, data);
+            PutData putData = new PutData("http://192.168.1.85:10013//FoodAppLogin/getinfo2.php", "POST", field, data);
             if (putData.startPut()) {
                 if (putData.onComplete()) {
                     String result = putData.getResult();
@@ -79,8 +76,9 @@ public class getInfo {
                     }
 
                     else{
-                        parts = result.split("-");
-                        Log.d(TAG, "call: parts: " + parts);
+                        Log.d(TAG, "call: results: " + result.toString());
+                        parts = result.split("~");
+                        Log.d(TAG, "call: parts: " + (parts[10].toString()));
 
                     }
 
@@ -92,4 +90,14 @@ public class getInfo {
         }
     }
 
+
+
 }
+
+    /*private void setter(String result){
+        mResult = result;
+        Log.d(TAG, "setter: result: " + result);
+        Log.d(TAG, "setter: mResult " + mResult);
+        MainActivity main = new MainActivity();
+        main.mSetResult(mResult);
+    }*/

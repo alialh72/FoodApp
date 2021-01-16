@@ -7,8 +7,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,21 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapterLocalFavs;
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapterMain;
 import com.example.foodapp.RecyclerViews.RecyclerViewMenu;
 import com.example.foodapp.RecyclerViews.RecyclerViewRest;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -40,28 +37,17 @@ public class RestaurantPage extends AppCompatActivity {
 
     private static final String TAG = "";
 
-    private ListMultimap<String, String> CuisineTags = ArrayListMultimap.create();
-    private ListMultimap<String, String> MenuList = ArrayListMultimap.create();
 
-    private ListMultimap<String, Integer> FoodCategory = ArrayListMultimap.create();
-
-
-    private ListMultimap<String, Integer> RestFood = ArrayListMultimap.create();
-
-    private HashMap<Integer, String> FoodId = new HashMap<Integer, String>();
-    private HashMap<Integer, String> FoodDescriptions = new HashMap<Integer, String>();
-    private HashMap<Integer, String> FoodImgs = new HashMap<Integer, String>();
-    private HashMap<Integer, Double> FoodPrice = new HashMap<Integer, Double>();
 
     private String restaurantname, restaurantimage;
 
     private String currentUsername, currentFullname, currentEmail;
-    private boolean loggedin = false;
+    private boolean loggedin = login.loggedin;
     private double ratings;
     private int price;
     private MainActivity mainActivity = new MainActivity();
 
-    private TextView restaurant_title, cuisine_text, rating_text, price_text, food_category_title, textty;
+    private TextView restaurant_title, cuisine_text, rating_text, price_text, food_category_title;
     private ImageView restaurant_image;
 
     //----------------XML-------------------------
@@ -69,17 +55,31 @@ public class RestaurantPage extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView emailtext, usernametext, logintext;
 
+    private View decorView;
 
-
+    CartClass mCartClass = food_page.CartClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_page);
 
+
+
+        decorView = getWindow().getDecorView();
+        decorView = getWindow().getDecorView();
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0){
+                    decorView.setSystemUiVisibility(hideSystemBars());
+                }
+            }
+        });
+
         if(getIntent().getStringExtra("USERNAME") != null) {
             currentUsername = getIntent().getStringExtra("USERNAME");
-            loggedin = getIntent().getExtras().getBoolean("LOGGEDIN");
             Log.d(TAG, "onCreate: logged in: " + loggedin);
             Log.d(TAG, "onCreate: USERNAME: " + currentUsername);
             if (loggedin == true){
@@ -117,13 +117,11 @@ public class RestaurantPage extends AppCompatActivity {
 
         restaurantname = getIntent().getStringExtra("RESTAURANT_NAME");
         restaurantimage = getIntent().getStringExtra("RESTAURANT_IMAGE");
-
-        CuisineTags = (ListMultimap) getIntent().getSerializableExtra("CUISINETAGS");
-        MenuList = (ListMultimap) getIntent().getSerializableExtra("MENULIST");
         ratings = getIntent().getExtras().getDouble("RATINGS");
         price = getIntent().getExtras().getInt("PRICERANGE");
 
-        getHashMapFromTextFile();
+        //mCartClass.setRestaurant(restaurantname, this);
+
         setText();
 
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
@@ -133,7 +131,7 @@ public class RestaurantPage extends AppCompatActivity {
                     if (emailtext.getText() != currentEmail && usernametext.getText() != currentFullname){
                         emailtext.setVisibility(View.VISIBLE);
                         emailtext.setText(currentEmail);
-                        usernametext.setText(currentFullname);
+                        usernametext.setText(WordUtils.capitalize(currentFullname));
                     }
                     logintext.setText("Sign Out");
                 }
@@ -178,15 +176,29 @@ public class RestaurantPage extends AppCompatActivity {
     //nav drawer onclicks
 
     public void Home(View view){
-        Log.d(TAG, "Home button clicked");
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
-        intent.putExtra("LOGGEDIN", loggedin);
+        finish();
 
-        if (currentUsername != null){
-            intent.putExtra("USERNAME", currentUsername);
-        }
+    }
+
+    public void yougot(View view){
+        Toast.makeText(this, "lol u got played this doesnt do anything", Toast.LENGTH_SHORT).show();
+    }
+
+    public void startNextActivity(String foodname, String Description, String Image, double price, int foodids){
+        Intent intent = new Intent(getBaseContext(), food_page.class);
+        ArrayList<String> lchoice = MainActivity.FoodChoices.get(foodids);
+        Log.d(TAG, "startNextActivity: lchoice: "+lchoice);
+
+        intent.putExtra("FOODNAME", foodname);
+        intent.putExtra("RESTAURANT", restaurantname);
+        intent.putExtra("FOODID", foodids);
+        intent.putExtra("DESCRIPTION", Description);
+        intent.putExtra("IMAGE",Image);
+        intent.putExtra("PRICE",price);
+        intent.putExtra("CHOICES",lchoice);
         startActivity(intent);
 
+        Log.d(TAG, "login button: new intent has been started");
     }
 
     public void Search(View view){
@@ -234,13 +246,13 @@ public class RestaurantPage extends AppCompatActivity {
 
         //Loads restaurant tags
         ArrayList<String> Tags = new ArrayList<>();
-        Tags.addAll(CuisineTags.get(restaurantname)); //turns the collection into an arraylist
+        Tags.addAll(MainActivity.CuisineTags.get(restaurantname)); //turns the collection into an arraylist
         String answer = String.join(", ", Tags); //turns the arraylist into a string because an arraylist cant be set as text
         cuisine_text.setText(answer);
 
         //Sets up the menu bar
         ArrayList<String> MenuBar = new ArrayList<>();
-        MenuBar.addAll(MenuList.get(restaurantname)); //turns the collection into an arraylist
+        MenuBar.addAll(MainActivity.MenuList.get(restaurantname)); //turns the collection into an arraylist
         initRecyclerView(MenuBar);
 
 
@@ -254,6 +266,10 @@ public class RestaurantPage extends AppCompatActivity {
 
     }
 
+    public int hideSystemBars(){
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN;
+    }
+
     private void initRecyclerView(ArrayList<String> mMenuBar){
         //Local favorites recycler
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
@@ -264,10 +280,10 @@ public class RestaurantPage extends AppCompatActivity {
 
     }
 
-    private void MenuRecycler(ArrayList<String> RestaurantList, ArrayList<Double> mPrices, ArrayList<String> FoodImg, ArrayList<String> Descriptions){
+    private void MenuRecycler(List<String> RestaurantList, ArrayList<Double> mPrices, ArrayList<String> FoodImg, ArrayList<String> Descriptions, ArrayList<Integer> mRestaurant){
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         RecyclerView Menu = findViewById(R.id.Starters);
-        RecyclerViewRest LocalAdapter = new RecyclerViewRest(RestaurantList,mPrices,FoodImg,Descriptions, this);
+        RecyclerViewRest LocalAdapter = new RecyclerViewRest(RestaurantList,mPrices,FoodImg,Descriptions,mRestaurant, this);
         Menu.setAdapter(LocalAdapter);
         Menu.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
     }
@@ -275,13 +291,13 @@ public class RestaurantPage extends AppCompatActivity {
     public void switcheroo(String menu){
         ArrayList<Integer> FoodCat = new ArrayList<>(); //array list contains all foodids that are in the same category
         ArrayList<Integer> mRestaurant = new ArrayList<>(); //contains foodids
-        ArrayList<String> RestaurantList = new ArrayList<>(); //contains food names
+        List<String> RestaurantList = new ArrayList<String>(); //contains food names
         ArrayList<String> FoodImg = new ArrayList<>(); //contains food imgs
         ArrayList<Double> Prices = new ArrayList<>(); //contains foodids
         ArrayList<String> Descriptions = new ArrayList<>(); //contains foodids
 
-        FoodCat.addAll(FoodCategory.get(menu));
-        mRestaurant.addAll(RestFood.get(restaurantname));
+        FoodCat.addAll(MainActivity.FoodCategory.get(menu));
+        mRestaurant.addAll(MainActivity.RestFood.get(restaurantname));
         mRestaurant.retainAll(FoodCat);
         Log.d(TAG, "switcheroo: mRestaurant: "+mRestaurant);
 
@@ -289,60 +305,57 @@ public class RestaurantPage extends AppCompatActivity {
         while (RestaurantList.size() < mRestaurant.size() && Prices.size() < mRestaurant.size() && FoodImg.size() < mRestaurant.size()){
             int fooditem = mRestaurant.get(i);
             Log.d(TAG, "switcheroo: fooditem: "+fooditem);
-            RestaurantList.add(FoodId.get(fooditem));
-            Prices.add(FoodPrice.get(fooditem));
-            FoodImg.add(FoodImgs.get(fooditem));
-            Descriptions.add(FoodDescriptions.get(fooditem));
+
+            RestaurantList.add(MainActivity.FoodId.get(fooditem));
+            Prices.add(MainActivity.FoodPrice.get(fooditem));
+            FoodImg.add(MainActivity.FoodImgs.get(fooditem));
+            Descriptions.add(MainActivity.FoodDescriptions.get(fooditem));
             i += 1;
         }
 
         Log.d(TAG, "switcheroo: restlist: " + RestaurantList);
 
-        MenuRecycler(RestaurantList, Prices, FoodImg, Descriptions);
+        MenuRecycler(RestaurantList, Prices, FoodImg, Descriptions, mRestaurant);
         food_category_title.setText(menu);
     }
 
 
-    public void getHashMapFromTextFile(){
 
-        getFood GetFood = new getFood();
-        Log.d(TAG, "getHashMapFromTextFile: inside hashmapstart");
-        try {
-            String parts[] = GetFood.mGet("pee");
-            Log.d(TAG, "getHashMapFromTextFile: parts: "+parts);
-            String parts2[] = new String[0];
-            String line;
-            int i;
-            String x;
-            for (i = 0; i < parts.length; i++) {
-                // accessing each element of array
-                x = parts[i];
-                Log.d(TAG, "calld: x: " + x);
-                parts2 = x.split(";", 7);
-                int mFoodId = Integer.parseInt(parts2[0]);
-                String Dish = parts2[1];
-                String Restaurant = parts2[2];
-                String Category = parts2[3];
-                double Price = Double.parseDouble(parts2[4]);
-                String images = parts2[5];
-                String description = parts2[6];
-                FoodId.put(mFoodId, Dish);
-                FoodCategory.put(Category, mFoodId);
-                RestFood.put(Restaurant, mFoodId);
-                FoodPrice.put(mFoodId,Price);
-                FoodImgs.put(mFoodId, images);
-                FoodDescriptions.put(mFoodId, description);
-                Log.d(TAG, "call: parts2: " + parts2.toString());
-            }
-            Log.d(TAG, "onCreate: resukt: "+ Arrays.toString(GetFood.result));
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "onCreate: foodid: "+FoodId);
-
-
+    public void SearchBar(View view){
+        Searching(this);
     }
+
+    public void Searching(Context context){
+        Intent intent = new Intent(context, Search.class);
+        intent.putExtra("RESTAURANT_NAME", MainActivity.mRestaurantName);
+        intent.putExtra("RESTAURANT_IMAGE", MainActivity.RestaurantImagesMap);
+        intent.putExtra("CUISINETAGS",(Serializable) MainActivity.CuisineTags);
+        intent.putExtra("MENULIST",(Serializable) MainActivity.MenuList);
+
+        if (loggedin == true){
+            intent.putExtra("LOGGEDIN", loggedin);
+            intent.putExtra("USERNAME", currentUsername);
+        }
+
+        intent.putExtra("RATINGS",(Serializable) MainActivity.Ratings);
+        intent.putExtra("PRICERANGE",(Serializable) MainActivity.PriceRange);
+
+        startActivity(intent);
+
+        finish();
+    }
+
+
+    public void CartGo(View view){
+        if (food_page.CartClass.cart.size() == 0){
+            Toast.makeText(this, "Cart is empty", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(this, CartPage.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+
 }

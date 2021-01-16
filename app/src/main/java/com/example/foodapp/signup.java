@@ -11,6 +11,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 public class signup extends AppCompatActivity {
 
-    TextInputEditText textInputEditTextFullname,textInputEditTextUsername, textInputEditTextPassword, textInputEditTextEmail;
+    EditText textInputEditTextFullname,textInputEditTextUsername, textInputEditTextPassword, textInputEditTextEmail;
     Button buttonSignUp;
     TextView textViewLogin, textView2;
     ProgressBar progressBar;
@@ -38,7 +39,6 @@ public class signup extends AppCompatActivity {
         buttonSignUp = findViewById(R.id.buttonSignUp);
         textViewLogin = findViewById(R.id.loginText);
         progressBar = findViewById(R.id.progress);
-        textView2 = findViewById(R.id.textView2);
 
         textViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,20 +50,6 @@ public class signup extends AppCompatActivity {
         });
 
 
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ((textView2.getText()) == "show password"){
-                    textInputEditTextPassword.setTransformationMethod(null);
-                    textView2.setText("hide password");
-                }
-                else{
-                    textInputEditTextPassword.setTransformationMethod(new PasswordTransformationMethod());
-                    textView2.setText("show password");
-                }
-            }
-        });
-
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +59,7 @@ public class signup extends AppCompatActivity {
                 email = String.valueOf(textInputEditTextEmail.getText());
                 username = String.valueOf(textInputEditTextUsername.getText());
 
-                if (!fullname.equals("") && !username.equals("") && !email.equals("") && !password.equals("")) {
+                if (!fullname.equals("") && !username.equals("") && !email.equals("") && !password.equals("") && !username.equals("Guest")) {
                     progressBar.setVisibility(View.VISIBLE); //Start ProgressBar first (Set visibility VISIBLE)
 
                     Handler handler = new Handler(Looper.getMainLooper());
@@ -101,7 +87,7 @@ public class signup extends AppCompatActivity {
 
                             //set the url to http://23.16.93.156:10013//FoodAppLogin/signup.php if accessing from a location outside of alis localhost
                             //it might already be set as the ip above, if so just leave it alone
-                            PutData putData = new PutData("http://192.168.1.85:10013//FoodAppLogin/signup.php", "POST", field, data);
+                            PutData putData = new PutData("http://192.168.1.78:10019//FoodAppLogin/signup.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
@@ -127,7 +113,7 @@ public class signup extends AppCompatActivity {
                 }
 
                 else{
-                    Toast.makeText(signup.this, "All fields are required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(signup.this, "Please make sure all fields are filled", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -136,8 +122,10 @@ public class signup extends AppCompatActivity {
         });
 
 
-
-
-
     }
+
+    public void ReturnHome(View view){
+        finish();
+    }
+
 }

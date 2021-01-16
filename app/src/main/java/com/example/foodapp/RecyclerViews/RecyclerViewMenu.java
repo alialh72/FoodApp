@@ -19,16 +19,17 @@ import com.example.foodapp.R;
 import com.example.foodapp.RestaurantPage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewMenu extends RecyclerView.Adapter<RecyclerViewMenu.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mRestaurantName = new ArrayList<>();
+    private List<String> mRestaurantName = new ArrayList<>();
     private ArrayList<String> mRestaurantImage = new ArrayList<>();
     private Context mContext;
 
 
-    public RecyclerViewMenu(ArrayList<String> lrestauranttext, Context context){
+    public RecyclerViewMenu(List<String> lrestauranttext, Context context){
         mRestaurantName = lrestauranttext;
 
         mContext = context;

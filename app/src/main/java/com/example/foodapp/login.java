@@ -10,6 +10,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +21,11 @@ import com.vishnusivadas.advanced_httpurlconnection.PutData;
 public class login extends AppCompatActivity {
 
     private static final String TAG = "";
-    TextInputEditText textInputEditTextUsername, textInputEditTextPassword;
+    EditText textInputEditTextUsername, textInputEditTextPassword;
     Button buttonLogin;
     TextView textViewSignUp, textView2;
     ProgressBar progressBar;
+    public static boolean loggedin = false;
     private String currentUsername;
     private boolean justlogged = false;
 
@@ -37,7 +39,6 @@ public class login extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewSignUp = findViewById(R.id.signUpText);
         progressBar = findViewById(R.id.progress);
-        textView2 = findViewById(R.id.textView2);
 
         if(getIntent().getExtras() != null){
             justlogged = getIntent().getExtras().getBoolean("JUSTLOGGED");
@@ -52,19 +53,6 @@ public class login extends AppCompatActivity {
             }
         });
 
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ((textView2.getText()) == "show password"){
-                    textInputEditTextPassword.setTransformationMethod(null);
-                    textView2.setText("hide password");
-                }
-                else{
-                    textInputEditTextPassword.setTransformationMethod(new PasswordTransformationMethod());
-                    textView2.setText("show password");
-                }
-            }
-        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +85,7 @@ public class login extends AppCompatActivity {
 
                             //set the url to http://23.16.93.156:10013//FoodAppLogin/login.php if accessing from a location outside of alis localhost
                             //it might already be set as the ip above, if so just leave it alone
-                            PutData putData = new PutData("http://192.168.1.85:10013//FoodAppLogin/login.php", "POST", field, data);
+                            PutData putData = new PutData("http://192.168.1.78:10019//FoodAppLogin/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
@@ -107,9 +95,9 @@ public class login extends AppCompatActivity {
                                         Toast.makeText(login.this, result, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         intent.putExtra("USERNAME", currentUsername);
+                                        MainActivity.username = currentUsername;
                                         justlogged = false;
-                                        boolean loggedin = true;
-                                        intent.putExtra("LOGGEDIN", loggedin);
+                                        loggedin = true;
                                         Log.d(TAG, "login: home page started");
                                         startActivity(intent);
                                         finish();
@@ -139,10 +127,9 @@ public class login extends AppCompatActivity {
     }
 
     public void ReturnHome(View view){
-        boolean loggedin = false;
-        justlogged = false;
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("LOGGEDIN", loggedin);
+        loggedin = false;
+        Log.d(TAG, "login: home page started");
         startActivity(intent);
         finish();
     }

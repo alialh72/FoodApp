@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -36,11 +37,15 @@ import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapterLocalFavs;
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapterMain;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -78,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
     private Double currentRating;
     private Integer currentPriceRange, currentPrice;
 
+    private String clickedtag="";
+    private static String selectedCuisine;
     //booleans
-    private boolean loggedin = false;
 
 
 
@@ -87,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mCuisineText = new ArrayList<>();
     private ArrayList<String> mCuisineImages = new ArrayList<>();
 
-    private ArrayList<String> mRestaurantName = new ArrayList<>();
-    private ArrayList<String> mRestaurantImages = new ArrayList<>();
-    private HashMap<String, String> RestaurantImagesMap = new HashMap<>();
+    public static ArrayList<String> mRestaurantName = new ArrayList<>();
+    public static ArrayList<String> mRestaurantImages = new ArrayList<>();
+    public static HashMap<String, String> RestaurantImagesMap = new HashMap<>();
 
     private ArrayList<String> mRestaurantNameSub = new ArrayList<>();
     private ArrayList<String> mRestaurantImagesSub = new ArrayList<>();
@@ -97,21 +103,24 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mRestaurantNameSub2 = new ArrayList<>();
     private ArrayList<String> mRestaurantImagesSub2 = new ArrayList<>();
 
-    private HashMap<String, Double> Ratings = new HashMap<String, Double>();
-    private HashMap<String, Integer> PriceRange = new HashMap<String, Integer>();
-    private ListMultimap<String, String> MenuList = ArrayListMultimap.create();
-    private ListMultimap<String, Integer> FoodCategory = ArrayListMultimap.create();
-    private ListMultimap<String, Integer> RestFood = ArrayListMultimap.create();
-    private HashMap<Integer, String> FoodId = new HashMap<Integer, String>();
-    private HashMap<Integer, String> FoodImgs = new HashMap<Integer, String>();
-    private HashMap<Integer, Double> FoodPrice = new HashMap<Integer, Double>();
-    private HashMap<Integer, String> FoodDescription = new HashMap<Integer, String>();
-    private ListMultimap<String, String> CuisineTags = ArrayListMultimap.create();
-    private ListMultimap<String, String> ReverseCuisines = ArrayListMultimap.create();
-    private ArrayList<String> RandomRestaurant = new ArrayList<>();
-    private ArrayList<String> RandomRestaurantImages = new ArrayList<>();
+    public static HashMap<String, Double> Ratings = new HashMap<String, Double>();
+    public static HashMap<String, Integer> PriceRange = new HashMap<String, Integer>();
+    public static ListMultimap<String, String> MenuList = ArrayListMultimap.create();
+    public static ListMultimap<String, Integer> FoodCategory = ArrayListMultimap.create();
+    public static ListMultimap<String, Integer> RestFood = ArrayListMultimap.create();
+    public static HashMap<Integer, String> FoodId = new HashMap<Integer, String>();
+    public static HashMap<Integer, String> FoodImgs = new HashMap<Integer, String>();
+    public static HashMap<Integer, Double> FoodPrice = new HashMap<Integer, Double>();
+    public static HashMap<Integer, String> FoodDescriptions = new HashMap<Integer, String>();
+    public static HashMap<Integer, ArrayList<String>> FoodChoices = new HashMap<Integer, ArrayList<String>>();
+    public static ListMultimap<String, String> CuisineTags = ArrayListMultimap.create();
+    public ListMultimap<String, String> ReverseCuisines = ArrayListMultimap.create();
+    public ArrayList<String> RandomRestaurant = new ArrayList<>();
+    public static String username = "Guest";
 
+    public ArrayList<String> RandomRestaurantImages = new ArrayList<>();
 
+    boolean loggedin = login.loggedin;
 
     //Random Generator
     private Random generator = new Random();
@@ -125,8 +134,9 @@ public class MainActivity extends AppCompatActivity {
     //----------------XML-------------------------
     private SearchView searchBar;
     private DrawerLayout drawerLayout;
-    private TextView emailtext, usernametext, logintext;
+    private TextView emailtext, usernametext, logintext, welcometext;
     private ImageView background;
+    private View decorView;
 
 
 
@@ -136,34 +146,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        background = findViewById(R.id.imageBackground);
+        Log.d(TAG, "onCreate: FoodId: " + FoodId.size());
 
-        Glide.with(this)
-                .asBitmap()
-                .load("https://imgur.com/ODBDNkb.png")
-                .into(background);
+        if (FoodId.size() == 0){
+            getHashMapFromTextFile();
+        }
 
-        if(getIntent().getExtras() != null) {
-            loggedin = getIntent().getExtras().getBoolean("LOGGEDIN");
-            Log.d(TAG, "onCreate: logged in: " + loggedin);
 
-            if (loggedin == true){
-                if(getIntent().getStringExtra("USERNAME") != null) {
-                    currentUsername = getIntent().getStringExtra("USERNAME");
-                    try {
-                        mGetInfo.mGet(currentUsername);
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, "onCreate: currentUsername: " + Arrays.toString(mGetInfo.result));
-                    currentFullname = mGetInfo.result[0];
-                    currentEmail = mGetInfo.result[1];
-                    Log.d(TAG, "onCreate: Current Email: "+currentEmail);
+
+
+
+
+
+        // Hide the status bar.
+        decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0){
+                    decorView.setSystemUiVisibility(hideSystemBars());
                 }
             }
-        }
+        });
+
 
 
         //assign xml
@@ -172,6 +177,40 @@ public class MainActivity extends AppCompatActivity {
         emailtext = findViewById(R.id.emailfield);
         usernametext = findViewById(R.id.textView4);
         logintext = findViewById(R.id.login);
+        background = findViewById(R.id.imageBackground);
+        welcometext = findViewById(R.id.welcometext);
+
+        Glide.with(this)
+                .asBitmap()
+                .load("https://imgur.com/ODBDNkb.png")
+                .into(background);
+
+
+        Log.d(TAG, "onCreate: logged in: " + login.loggedin);
+        if (login.loggedin == true){
+            if(getIntent().getStringExtra("USERNAME") != null) {
+                currentUsername = getIntent().getStringExtra("USERNAME");
+                try {
+                    mGetInfo.mGet(currentUsername);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.d(TAG, "onCreate: currentUsername: " + Arrays.toString(mGetInfo.result));
+                currentFullname = mGetInfo.result[0];
+                currentEmail = mGetInfo.result[1];
+                String[] arr = currentFullname.split(" ");
+                String cap = arr[0].substring(0, 1).toUpperCase() + arr[0].substring(1);
+                welcometext.setText(cap);
+                Log.d(TAG, "onCreate: Current Email: "+currentEmail);
+                }
+
+        }
+        else{
+            username = "Guest";
+        }
+
 
 
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
@@ -200,28 +239,40 @@ public class MainActivity extends AppCompatActivity {
         initImageBitmaps();
     }
 
+    public void onWindowFocusChanged(boolean hasFocus){
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            decorView.setSystemUiVisibility(hideSystemBars());
+        }
+    }
+
+    public int hideSystemBars(){
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN;
+    }
+
     public void fixDrawer(boolean loggedin){
         setLoggedin(loggedin);
 
-        if (loggedin == true){
+        if (login.loggedin == true){
             if (emailtext.getText() != currentEmail && usernametext.getText() != currentFullname){
                 Log.d(TAG, "fixDrawer: current email: "+currentEmail);
-                usernametext.setText(currentFullname);
+                usernametext.setText(WordUtils.capitalize(currentFullname));
                 emailtext.setVisibility(View.VISIBLE);
                 emailtext.setText(currentEmail);
             }
             logintext.setText("Sign Out");
         }
-        else if(loggedin == false){
+        else if(login.loggedin == false){
             emailtext.setText("");
             emailtext.setVisibility(View.GONE);
             usernametext.setText("Guest");
             logintext.setText("Log In / Sign Up");
+            username = "Guest";
         }
     }
 
     public void setLoggedin(boolean loggedin){
-        this.loggedin = loggedin;
+        login.loggedin = loggedin;
     }
 
 
@@ -244,11 +295,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ReturnHome(View view){
-        loggedin = false;
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("LOGGEDIN", loggedin);
-        startActivity(intent);
-        finish();
     }
 
     //nav drawer onclicks
@@ -289,12 +335,10 @@ public class MainActivity extends AppCompatActivity {
 
     //recyclerview
     private void initImageBitmaps(){
-
-
         Log.d(TAG, "initImageBitmaps: preparing bitmaps");
-        RestaurantPage restaurantPage = new RestaurantPage();
+
         Log.d(TAG, "initImageBitmaps: afterobject");
-        restaurantPage.getHashMapFromTextFile();
+
         Log.d(TAG, "initImageBitmaps: aftermethod");
         Log.d(TAG, "onCreate: mapfromfile Foodid: " + FoodId);
         Log.d(TAG, "onCreate: RestFood: " + RestFood);
@@ -303,33 +347,32 @@ public class MainActivity extends AppCompatActivity {
 
 
         //---------------------------List of Cuisines--------------------------
-
         //Cuisine 1
-        mCuisineImages.add("https://i.imgur.com/Ux2XNYA.jpg");
+        mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517785801228338/burger.png");
         mCuisineText.add("American");
 
         //Cuisine 2
-        mCuisineImages.add("https://i.imgur.com/isuqMb3.jpg");
+        mCuisineImages.add("https://media.discordapp.net/attachments/713881124668964914/799517794885435402/pizza.png?width=983&height=676");
         mCuisineText.add("Pizza");
 
         //Cuisine 3
-        mCuisineImages.add("https://static.toiimg.com/thumb/61589069.cms?width=1200&height=900");
+        mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517793116094464/wings.png");
         mCuisineText.add("Chicken");
 
         //Cuisine 4
-        mCuisineImages.add("https://static.onecms.io/wp-content/uploads/sites/35/2012/01/16184542/chinese-takeout-box_0.jpg");
+        mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517788397371412/china.png");
         mCuisineText.add("Chinese");
 
         //Cuisine 5
-        mCuisineImages.add("https://hips.hearstapps.com/del.h-cdn.co/assets/17/15/1492181920-delish-sticky-orange-chicken-2.jpg");
+        mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517774551842836/asian.png");
         mCuisineText.add("Asian");
 
         //Cuisine 6
-        mCuisineImages.add("https://www.budgetbytes.com/wp-content/uploads/2013/07/Creamy-Spinach-Tomato-Pasta-bowl-500x375.jpg");
+        mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517786300088380/pasta.png");
         mCuisineText.add("Italian");
 
         //cuisine 7
-        mCuisineImages.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf2fXC2aUbgbr0y5r-B9E-P-a32tFi9juksw&usqp=CAU");
+        mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517787394539530/tacos.png");
         mCuisineText.add("Mexican");
 
 
@@ -341,222 +384,259 @@ public class MainActivity extends AppCompatActivity {
         //65-68: sushi
         //69 - 74: pizza
 
-        //-------------------------Restaurants---------------------------------------
+        if(CuisineTags.size() == 0){
+            //-------------------------Restaurants---------------------------------------
+            mRestaurantImages.add("https://imgur.com/pr1IZEq.jpg");
+            RestaurantImagesMap.put("Sushi Counter", "https://imgur.com/pr1IZEq.jpg"); //for accessibility later
 
-        mRestaurantImages.add("https://imgur.com/pr1IZEq.jpg");
-        RestaurantImagesMap.put("Sushi Counter", "https://imgur.com/pr1IZEq.jpg"); //for accessibility later
+            mRestaurantName.add("Sushi Counter");
 
-        mRestaurantName.add("Sushi Counter");
-        CuisineTags.put("Sushi Counter", "Asian");
-        CuisineTags.put("Sushi Counter", "Japanese");
 
-        Ratings.put("Sushi Counter", 4.5);
+            //-----------------------------
 
-        PriceRange.put("Sushi Counter", 2);
+            mRestaurantImages.add("https://imgur.com/1rcwTbY.jpg");
+            RestaurantImagesMap.put("Olivier's Bistro", "https://imgur.com/1rcwTbY.jpg");
 
-        MenuList.put("Sushi Counter", "Starters");
-        MenuList.put("Sushi Counter", "Mains");
-        MenuList.put("Sushi Counter", "Sushi");
-        MenuList.put("Sushi Counter", "Dessert");
+            mRestaurantName.add("Olivier's Bistro");
 
-        //-----------------------------
 
-        mRestaurantImages.add("https://imgur.com/1rcwTbY.jpg");
-        RestaurantImagesMap.put("Olivier’s Bistro", "https://imgur.com/1rcwTbY.jpg");
+            //-----------------------------
 
-        mRestaurantName.add("Olivier's Bistro");
-        CuisineTags.put("Olivier's Bistro", "French");
-        CuisineTags.put("Olivier's Bistro", "European");
+            mRestaurantImages.add("https://imgur.com/Guf58Hz.jpg");
+            RestaurantImagesMap.put("Salt Burger", "https://imgur.com/Guf58Hz.jpg");
 
-        Ratings.put("Olivier's Bistro", 4.7);
+            mRestaurantName.add("Salt Burger");
 
-        PriceRange.put("Olivier's Bistro", 3);
+            //-----------------------------
 
-        MenuList.put("Olivier's Bistro", "Starters");
-        MenuList.put("Olivier's Bistro", "Mains");
-        MenuList.put("Olivier's Bistro", "Desserts");
+            mRestaurantImages.add("https://imgur.com/S55r8kF.jpg");
+            RestaurantImagesMap.put("Red Dragon", "https://imgur.com/S55r8kF.jpg");
 
-        //-----------------------------
+            mRestaurantName.add("Red Dragon");
 
-        mRestaurantImages.add("https://imgur.com/Guf58Hz.jpg");
-        RestaurantImagesMap.put("Salt Burger", "https://imgur.com/Guf58Hz.jpg");
 
-        mRestaurantName.add("Salt Burger");
-        CuisineTags.put("Salt Burger", "American");
-        CuisineTags.put("Salt Burger", "Burger");
+            //-----------------------------
 
-        Ratings.put("Salt Burger", 3.8);
+            mRestaurantImages.add("https://imgur.com/WdqIPhx.jpg");
+            RestaurantImagesMap.put("Basilico", "https://imgur.com/WdqIPhx.jpg");
 
-        PriceRange.put("Salt Burger", 1);
+            mRestaurantName.add("Basilico");
 
-        MenuList.put("Salt Burger", "Burgers");
-        MenuList.put("Salt Burger", "Mains");
 
-        //-----------------------------
+            //-----------------------------
 
-        mRestaurantImages.add("https://imgur.com/S55r8kF.jpg");
-        RestaurantImagesMap.put("Red Dragon", "https://imgur.com/S55r8kF.jpg");
+            mRestaurantImages.add("https://imgur.com/IB0U9LQ.jpg");
+            RestaurantImagesMap.put("Tolden Wings", "https://imgur.com/IB0U9LQ.jpg");
 
-        mRestaurantName.add("Red Dragon");
-        CuisineTags.put("Red Dragon", "Chinese");
-        CuisineTags.put("Red Dragon", "Asian");
+            mRestaurantName.add("Tolden Wings");
 
-        Ratings.put("Red Dragon", 3.5);
 
-        PriceRange.put("Red Dragon", 1);
+            //-----------------------------
 
-        MenuList.put("Red Dragon", "Starters");
-        MenuList.put("Red Dragon", "Mains");
-        MenuList.put("Red Dragon", "Desserts");
+            mRestaurantImages.add("https://imgur.com/a4yuKlm.jpg");
+            RestaurantImagesMap.put("Think Noodles", "https://imgur.com/a4yuKlm.jpg");
 
-        //-----------------------------
+            mRestaurantName.add("Think Noodles");
 
-        mRestaurantImages.add("https://imgur.com/WdqIPhx.jpg");
-        RestaurantImagesMap.put("Basilico", "https://imgur.com/WdqIPhx.jpg");
 
-        mRestaurantName.add("Basilico");
-        CuisineTags.put("Basilico", "Italian");
-        CuisineTags.put("Basilico", "Pizza");
+            //-----------------------------
 
-        Ratings.put("Basilico", 3.9);
+            mRestaurantImages.add("https://imgur.com/GnPPlNm.jpg");
+            RestaurantImagesMap.put("Hermanos", "https://imgur.com/GnPPlNm.jpg");
 
-        PriceRange.put("Basilico", 3);
+            mRestaurantName.add("Hermanos");
 
-        MenuList.put("Basilico", "Starters");
-        MenuList.put("Basilico", "Mains");
-        MenuList.put("Basilico", "Pizza");
 
-        //-----------------------------
+            //-----------------------------
 
-        mRestaurantImages.add("https://imgur.com/IB0U9LQ.jpg");
-        RestaurantImagesMap.put("Tolden Wings", "https://imgur.com/IB0U9LQ.jpg");
+            mRestaurantImages.add("https://imgur.com/nSIiI4J.jpg");
+            RestaurantImagesMap.put("Mamma Mia!", "https://imgur.com/nSIiI4J.jpg");
 
-        mRestaurantName.add("Tolden Wings");
-        CuisineTags.put("Tolden Wings", "Chicken");
-        CuisineTags.put("Tolden Wings", "American");
+            mRestaurantName.add("Mamma Mia!");
 
-        Ratings.put("Tolden Wings", 4.2);
 
-        PriceRange.put("Tolden Wings", 2);
+            //-----------------------------
 
-        MenuList.put("Tolden Wings", "Starters");
-        MenuList.put("Tolden Wings", "Wings");
-        MenuList.put("Tolden Wings", "Burgers");
+            mRestaurantImages.add("https://imgur.com/ogmitVa.jpg");
+            RestaurantImagesMap.put("Falafel Beirut", "https://imgur.com/ogmitVa.jpg");
 
-        //-----------------------------
+            mRestaurantName.add("Falafel Beirut");
 
-        mRestaurantImages.add("https://imgur.com/a4yuKlm.jpg");
-        RestaurantImagesMap.put("Think Noodles", "https://imgur.com/a4yuKlm.jpg");
 
-        mRestaurantName.add("Think Noodles");
-        CuisineTags.put("Think Noodles", "Chinese");
-        CuisineTags.put("Think Noodles", "Asian");
-        CuisineTags.put("Think Noodles", "Japanese");
+            //-----------------------------
 
-        Ratings.put("Think Noodles", 4.7);
+            mRestaurantImages.add("https://media-cdn.tripadvisor.com/media/photo-s/08/da/96/f6/jerusalem-shawarma.jpg");
+            RestaurantImagesMap.put("Amo Shawarma", "https://media-cdn.tripadvisor.com/media/photo-s/08/da/96/f6/jerusalem-shawarma.jpg");
 
-        PriceRange.put("Think Noodles", 1);
+            mRestaurantName.add("Amo Shawarma");
 
-        MenuList.put("Think Noodles", "Tapas");
-        MenuList.put("Think Noodles", "Ramen");
 
-        //-----------------------------
+            //-----------------------------
 
-        mRestaurantImages.add("https://imgur.com/GnPPlNm.jpg");
-        RestaurantImagesMap.put("Hermanos", "https://imgur.com/GnPPlNm.jpg");
+            mRestaurantImages.add("https://imgur.com/kkin29T.jpg");
+            RestaurantImagesMap.put("CHKN", "https://imgur.com/kkin29T.jpg");
 
-        mRestaurantName.add("Hermanos");
-        CuisineTags.put("Hermanos", "Mexican");
-        CuisineTags.put("Hermanos", "Burritos");
-        CuisineTags.put("Hermanos", "Tacos");
+            mRestaurantName.add("CHKN");
 
-        Ratings.put("Hermanos", 4.3);
 
-        PriceRange.put("Hermanos", 1);
+            //-----------------------------------
 
-        MenuList.put("Hermanos", "Starters");
-        MenuList.put("Hermanos", "Mains");
-        MenuList.put("Hermanos", "Desserts");
+            mRestaurantImages.add("https://3di9nx2pw3s1jibo2g8ef7wo-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/28364828246_933e432a4a_k-1-e1563468625653-1024x796.jpg");
+            RestaurantImagesMap.put("Tequila & Tacos", "https://3di9nx2pw3s1jibo2g8ef7wo-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/28364828246_933e432a4a_k-1-e1563468625653-1024x796.jpg");
 
-        //-----------------------------
+            mRestaurantName.add("Tequila & Tacos");
 
-        mRestaurantImages.add("https://imgur.com/nSIiI4J.jpg");
-        RestaurantImagesMap.put("Mamma Mia!", "https://imgur.com/nSIiI4J.jpg");
 
-        mRestaurantName.add("Mamma Mia!");
-        CuisineTags.put("Mamma Mia!", "Italian");
-        CuisineTags.put("Mamma Mia!", "Pizza");
+            CuisineTags.put("Sushi Counter", "Asian");
+            CuisineTags.put("Sushi Counter", "Japanese");
 
-        Ratings.put("Mamma Mia!", 4.6);
+            Ratings.put("Sushi Counter", 4.5);
 
-        PriceRange.put("Mamma Mia!", 2);
+            PriceRange.put("Sushi Counter", 2);
 
-        MenuList.put("Mamma Mia!", "Pizza");
+            MenuList.put("Sushi Counter", "Starters");
+            MenuList.put("Sushi Counter", "Mains");
+            MenuList.put("Sushi Counter", "Sushi");
+            MenuList.put("Sushi Counter", "Dessert");
+            //--------------------------------------------------
+            CuisineTags.put("Olivier's Bistro", "French");
+            CuisineTags.put("Olivier's Bistro", "European");
 
-        //-----------------------------
+            Ratings.put("Olivier's Bistro", 4.7);
 
-        mRestaurantImages.add("https://imgur.com/ogmitVa.jpg");
-        RestaurantImagesMap.put("Falafel Beirut", "https://imgur.com/ogmitVa.jpg");
+            PriceRange.put("Olivier's Bistro", 3);
 
-        mRestaurantName.add("Falafel Beirut");
-        CuisineTags.put("Falafel Beirut", "Arabic");
+            MenuList.put("Olivier's Bistro", "Starters");
+            MenuList.put("Olivier's Bistro", "Mains");
+            MenuList.put("Olivier's Bistro", "Desserts");
+            //-----------------------------------------------------
+            CuisineTags.put("Salt Burger", "American");
+            CuisineTags.put("Salt Burger", "Burger");
 
-        Ratings.put("Falafel Beirut", 4.9);
+            Ratings.put("Salt Burger", 3.8);
 
-        PriceRange.put("Falafel Beirut", 2);
+            PriceRange.put("Salt Burger", 1);
 
-        MenuList.put("Falafel Beirut", "Starters");
-        MenuList.put("Falafel Beirut", "Mains");
-        MenuList.put("Falafel Beirut", "Shawarma");
+            MenuList.put("Salt Burger", "Burgers");
+            MenuList.put("Salt Burger", "Mains");
+            //-----------------------------------------------------
+            CuisineTags.put("Red Dragon", "Chinese");
+            CuisineTags.put("Red Dragon", "Asian");
 
-        //-----------------------------
+            Ratings.put("Red Dragon", 3.5);
 
-        mRestaurantImages.add("https://imgur.com/ZVsNP0M.jpg");
-        RestaurantImagesMap.put("Amo Shawarma", "https://imgur.com/ZVsNP0M.jpg");
+            PriceRange.put("Red Dragon", 1);
 
-        mRestaurantName.add("Amo Shawarma");
-        CuisineTags.put("Amo Shawarma", "Arabic");
+            MenuList.put("Red Dragon", "Starters");
+            MenuList.put("Red Dragon", "Mains");
+            MenuList.put("Red Dragon", "Desserts");
+            //-------------------------------------------------------
+            CuisineTags.put("Basilico", "Italian");
+            CuisineTags.put("Basilico", "Pizza");
 
-        Ratings.put("Amo Shawarma", 4.0);
+            Ratings.put("Basilico", 3.9);
 
-        PriceRange.put("Amo Shawarma", 2);
+            PriceRange.put("Basilico", 3);
 
-        MenuList.put("Amo Shawarma", "Shawarma");
-        MenuList.put("Amo Shawarma", "Sides");
-        MenuList.put("Amo Shawarma", "Drinks");
+            MenuList.put("Basilico", "Starters");
+            MenuList.put("Basilico", "Mains");
+            MenuList.put("Basilico", "Pizza");
+            //---------------------------------------------
+            CuisineTags.put("Tolden Wings", "Chicken");
+            CuisineTags.put("Tolden Wings", "American");
 
-        //-----------------------------
+            Ratings.put("Tolden Wings", 4.2);
 
-        mRestaurantImages.add("https://imgur.com/kkin29T.jpg");
-        RestaurantImagesMap.put("CHKN", "https://imgur.com/kkin29T.jpg");
+            PriceRange.put("Tolden Wings", 2);
 
-        mRestaurantName.add("CHKN");
-        CuisineTags.put("CHKN", "Chicken");
-        CuisineTags.put("CHKN", "American");
+            MenuList.put("Tolden Wings", "Starters");
+            MenuList.put("Tolden Wings", "Wings");
+            MenuList.put("Tolden Wings", "Burgers");
+            //-----------------------------------------------
+            CuisineTags.put("Think Noodles", "Chinese");
+            CuisineTags.put("Think Noodles", "Asian");
+            CuisineTags.put("Think Noodles", "Japanese");
 
-        Ratings.put("CHKN", 1.9);
+            Ratings.put("Think Noodles", 4.7);
 
-        PriceRange.put("CHKN", 1);
+            PriceRange.put("Think Noodles", 1);
 
-        MenuList.put("CHKN", "Burgers");
-        MenuList.put("CHKN", "Sides");
+            MenuList.put("Think Noodles", "Tapas");
+            MenuList.put("Think Noodles", "Ramen");
+            //------------------------------------------------
+            CuisineTags.put("Hermanos", "Mexican");
+            CuisineTags.put("Hermanos", "Burritos");
+            CuisineTags.put("Hermanos", "Tacos");
 
-        //-----------------------------------
+            Ratings.put("Hermanos", 4.3);
 
-        mRestaurantImages.add("https://3di9nx2pw3s1jibo2g8ef7wo-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/28364828246_933e432a4a_k-1-e1563468625653-1024x796.jpg");
-        RestaurantImagesMap.put("Tequila & Tacos", "https://3di9nx2pw3s1jibo2g8ef7wo-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/28364828246_933e432a4a_k-1-e1563468625653-1024x796.jpg");
+            PriceRange.put("Hermanos", 1);
 
-        mRestaurantName.add("Tequila & Tacos");
-        CuisineTags.put("Tequila & Tacos", "Mexican");
-        CuisineTags.put("Tequila & Tacos", "Tacos");
+            MenuList.put("Hermanos", "Starters");
+            MenuList.put("Hermanos", "Mains");
+            MenuList.put("Hermanos", "Desserts");
+            //-------------------------------------------------
+            CuisineTags.put("Mamma Mia!", "Italian");
+            CuisineTags.put("Mamma Mia!", "Pizza");
 
-        Ratings.put("Tequila & Tacos", 4.3);
+            Ratings.put("Mamma Mia!", 4.6);
 
-        PriceRange.put("Tequila & Tacos", 1);
+            PriceRange.put("Mamma Mia!", 2);
 
-        MenuList.put("Tequila & Tacos", "Starters");
-        MenuList.put("Tequila & Tacos", "Mains");
-        MenuList.put("Tequila & Tacos", "Desserts");
+            MenuList.put("Mamma Mia!", "Pizza");
+            //--------------------------------------------------
+            CuisineTags.put("Falafel Beirut", "Arabic");
+
+            Ratings.put("Falafel Beirut", 4.9);
+
+            PriceRange.put("Falafel Beirut", 2);
+
+            MenuList.put("Falafel Beirut", "Starters");
+            MenuList.put("Falafel Beirut", "Mains");
+            MenuList.put("Falafel Beirut", "Shawarma");
+            //-----------------------------------------------------
+            CuisineTags.put("Amo Shawarma", "Arabic");
+
+            Ratings.put("Amo Shawarma", 4.0);
+
+            PriceRange.put("Amo Shawarma", 2);
+
+            MenuList.put("Amo Shawarma", "Shawarma");
+            MenuList.put("Amo Shawarma", "Sides");
+            MenuList.put("Amo Shawarma", "Drinks");
+            //------------------------------------------------------
+            CuisineTags.put("CHKN", "Chicken");
+            CuisineTags.put("CHKN", "American");
+
+            Ratings.put("CHKN", 1.9);
+
+            PriceRange.put("CHKN", 1);
+
+            MenuList.put("CHKN", "Burgers");
+            MenuList.put("CHKN", "Sides");
+            //-----------------------------------------------------
+            CuisineTags.put("Tequila & Tacos", "Mexican");
+            CuisineTags.put("Tequila & Tacos", "Tacos");
+
+            Ratings.put("Tequila & Tacos", 4.3);
+
+            PriceRange.put("Tequila & Tacos", 1);
+
+            MenuList.put("Tequila & Tacos", "Starters");
+            MenuList.put("Tequila & Tacos", "Mains");
+            MenuList.put("Tequila & Tacos", "Desserts");
+            //------------------------------------------------------
+
+
+
+        }
+
+        Multimaps.invertFrom(CuisineTags, ReverseCuisines); //Creates a reverse multimap for easy access later
+        Log.d(TAG, "initImageBitmaps: reversemap " + ReverseCuisines);
+        Log.d(TAG, "initImageBitmaps: map "+CuisineTags);
+
+
+
 
         //Generates 2 lists for the main menu
 
@@ -574,9 +654,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Hashmaps
 
-        Multimaps.invertFrom(CuisineTags, ReverseCuisines); //Creates a reverse multimap for easy access later
-        Log.d(TAG, "initImageBitmaps: reversemap " + ReverseCuisines);
-        Log.d(TAG, "initImageBitmaps: map "+CuisineTags);
+
 
         Log.d(TAG, "initImageBitmaps: complete bitmaps");
         initRecyclerView();
@@ -585,7 +663,19 @@ public class MainActivity extends AppCompatActivity {
 
     //Calls the recyclerviewadapter
     private void initRecyclerView(){
-        randomCuisine();
+
+        if (RandomRestaurant.size()==0){
+            randomCuisine();
+        }
+
+        //Restaurant List
+        Log.d(TAG, "initRecyclerView: init recyclerview locals");
+        RecyclerView LocalrecyclerViewMain = findViewById(R.id.cuisinerestaurantlist);
+        LocalrecyclerViewMain.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+        RecyclerViewAdapterMain LocalAdapter3 = new RecyclerViewAdapterMain(RandomRestaurant, RandomRestaurantImages, this);
+        LocalrecyclerViewMain.setAdapter(LocalAdapter3);
+        LocalrecyclerViewMain.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
         //Cuisine recycler
         Log.d(TAG, "initRecyclerView: init recyclerview");
         RecyclerView recyclerView = findViewById(R.id.cuisinelist);
@@ -607,19 +697,17 @@ public class MainActivity extends AppCompatActivity {
         LocalrecyclerView2.setAdapter(LocalAdapter);
         LocalrecyclerView2.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
-        //Restaurant List
-        Log.d(TAG, "initRecyclerView: init recyclerview locals");
-        RecyclerView LocalrecyclerViewMain = findViewById(R.id.cuisinerestaurantlist);
-        LocalrecyclerViewMain.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        RecyclerViewAdapterMain LocalAdapter3 = new RecyclerViewAdapterMain(RandomRestaurant, RandomRestaurantImages, this);
-        LocalrecyclerViewMain.setAdapter(LocalAdapter3);
-        LocalrecyclerViewMain.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
 
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         RecyclerView LocalrecyclerView3 = findViewById(R.id.restaurantlist3);
         LocalAdapter = new RecyclerViewAdapterLocalFavs(mRestaurantName, mRestaurantImages, this, CuisineTags, Ratings);
         LocalrecyclerView3.setAdapter(LocalAdapter);
         LocalrecyclerView3.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+
+    }
+
+    public void cuisineRecycler(){
 
     }
 
@@ -632,6 +720,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void openRestaurantPage(){
         Intent intent = new Intent(getBaseContext(), RestaurantPage.class);
+        intent.putExtra("RESTAURANTNAMEARRAY", mRestaurantName);
+        intent.putExtra("RESTAURANTIMAGEARRAY", RestaurantImagesMap);
         intent.putExtra("RESTAURANT_NAME", CurrentRestaurantName);
         intent.putExtra("RESTAURANT_IMAGE", CurrentRestaurantImage);
         intent.putExtra("CUISINETAGS",(Serializable) CuisineTags);
@@ -663,12 +753,15 @@ public class MainActivity extends AppCompatActivity {
         int randomIndex;
         randomIndex = generator.nextInt(mCuisineText.size());
 
-        String selectedCuisine = mCuisineText.get(randomIndex);
+        selectedCuisine = mCuisineText.get(randomIndex);
+        Log.d(TAG, "randomCuisine: selectedcuisine: " + selectedCuisine);
         String selectedImage = mCuisineImages.get(randomIndex);
 
 
 
         RandomRestaurant.addAll(ReverseCuisines.get(selectedCuisine));
+        Log.d(TAG, "randomCuisine: reversecuisines: " + ReverseCuisines);
+        Log.d(TAG, "randomCuisine: random restaurant: " +RandomRestaurant);
 
         while (RandomRestaurant.size() > 2){
             int index = RandomRestaurant.size() -1;
@@ -696,11 +789,20 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() { } //disables the go back button on android when on the main page (because there is no where back to go)
 
     public void SearchBar(View view){
-        Intent intent = new Intent(getBaseContext(), Search.class);
+        Searching(this);
+    }
+
+    public void Searching(Context context){
+        Intent intent = new Intent(context, Search.class);
         intent.putExtra("RESTAURANT_NAME", mRestaurantName);
         intent.putExtra("RESTAURANT_IMAGE", RestaurantImagesMap);
         intent.putExtra("CUISINETAGS",(Serializable) CuisineTags);
         intent.putExtra("MENULIST",(Serializable) MenuList);
+
+        if (!clickedtag.equals("")){
+            intent.putExtra("TAG", clickedtag);
+        }
+
 
         if (loggedin == true){
             intent.putExtra("LOGGEDIN", loggedin);
@@ -714,5 +816,90 @@ public class MainActivity extends AppCompatActivity {
 
         finish();
     }
+
+
+
+    public void CartGo(View view){
+        if (food_page.CartClass.cart.size() == 0){
+            Toast.makeText(this, "Cart is empty", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(this, CartPage.class);
+            startActivity(intent);
+            finish();
+        }
+
+    }
+
+    public void getHashMapFromTextFile(){
+        getFood GetFood = new getFood();
+        Log.d(TAG, "getHashMapFromTextFile: inside hashmapstart");
+        try {
+            String parts[] = GetFood.mGet("pee");
+            Log.d(TAG, "getHashMapFromTextFile: parts: "+parts);
+            String parts2[] = new String[0];
+            String line;
+            int i;
+            String x;
+            for (i = 0; i < parts.length; i++) {
+                // accessing each element of array
+                x = parts[i];
+                Log.d(TAG, "calld: x: " + x);
+                parts2 = x.split(";", 9);
+                int mFoodId = Integer.parseInt(parts2[0]);
+                String Dish = parts2[1];
+                String Restaurant = parts2[2];
+                String Category = parts2[3];
+                double Price = Double.parseDouble(parts2[4]);
+                String images = parts2[5];
+                String description = parts2[6];
+
+
+                if (parts2[7].trim().length() <= 0){
+                    Log.d(TAG, "onCreate: this food item doesnt have any choices" );
+                }
+
+                else{
+                    String mchoices[] = parts2[7].trim().split(">",5);
+
+                    ArrayList<String> mfoodchoicelist = new ArrayList<>(Arrays.asList(mchoices));
+
+                    FoodChoices.put(mFoodId, mfoodchoicelist);
+                    Log.d(TAG, "onCreate: lineee: "+ FoodChoices.get(mFoodId));
+                }
+
+                FoodId.put(mFoodId, Dish);
+                FoodCategory.put(Category, mFoodId);
+                RestFood.put(Restaurant, mFoodId);
+                FoodPrice.put(mFoodId,Price);
+                FoodImgs.put(mFoodId, images);
+                FoodDescriptions.put(mFoodId, description);
+                Log.d(TAG, "call: parts2: " + parts2.toString());
+            }
+            Log.d(TAG, "onCreate: resukt: "+ Arrays.toString(GetFood.result));
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "onCreate: foodid: "+FoodId);
+
+
+    }
+
+    public void yougot(View view){
+        Toast.makeText(this, "lol u got played this doesnt do anything", Toast.LENGTH_SHORT).show();
+    }
+
+    public void cuisineclick(View view){
+        setTag(selectedCuisine);
+    }
+
+    public void setTag(String tag){
+        clickedtag = tag;
+        Searching(this);
+    }
+
 
 }

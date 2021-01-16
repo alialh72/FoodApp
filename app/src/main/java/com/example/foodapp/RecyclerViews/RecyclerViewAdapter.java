@@ -64,6 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mCuisineText.get(position));
+                ((MainActivity)mContext).setTag(mCuisineText.get(position));
             }
         });
 

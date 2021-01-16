@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.vishnusivadas.advanced_httpurlconnection.FetchData;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import java.util.concurrent.Callable;
@@ -55,21 +56,11 @@ public class getFood {
             //Creating array for parameters
             String[] parts = new String[0];
 
-            String[] field = new String[1];
-            field[0] = "username";
-
-            //Creating array for data
-            String[] data = new String[1];
-            data[0] = username;
-
-
-            //set the url to http://23.16.93.156:10013//FoodAppLogin/getinfo.php if accessing from a location outside of alis localhost
-            //it might already be set as the ip above, if so just leave it alone
-            PutData putData = new PutData("http://192.168.1.85:10013//FoodAppLogin/getinfo2.php", "POST", field, data);
-            if (putData.startPut()) {
-                if (putData.onComplete()) {
-                    String result = putData.getResult();
-
+            FetchData fetchData = new FetchData("http://192.168.1.78:10019//FoodAppLogin/getinfo2.php");
+            if (fetchData.startFetch()) {
+                if (fetchData.onComplete()) {
+                    String result = fetchData.getResult();
+                    //End ProgressBar (Set visibility to GONE)
                     if (result.equals("Login Success")){
                         Log.d(TAG, "run: how tf did this happen");
                         Log.d(TAG, "run: result: "+ result);
@@ -81,8 +72,7 @@ public class getFood {
                         Log.d(TAG, "call: parts: " + (parts[10].toString()));
 
                     }
-
-
+                    Log.i("FetchData", result);
                 }
             }
             return parts;

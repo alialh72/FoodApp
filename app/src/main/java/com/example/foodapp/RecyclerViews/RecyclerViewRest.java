@@ -18,24 +18,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodapp.MainActivity;
 import com.example.foodapp.R;
+import com.example.foodapp.RestaurantPage;
+import com.example.foodapp.food_page;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewRest extends RecyclerView.Adapter<RecyclerViewRest.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> FoodItemName = new ArrayList<>();
+    private List<String> FoodItemName = new ArrayList<>();
     private ArrayList<String> FoodImage = new ArrayList<>();
     private ArrayList<String> FoodPrice = new ArrayList<>();
     private ArrayList<String> FoodIngredients = new ArrayList<>();
     private ArrayList<String> FoodDescriptions = new ArrayList<>();
     private ArrayList<Double> Prices = new ArrayList<>();
+    private ArrayList<Integer> mRestaurant = new ArrayList<>();
     private Context mContext;
 
 
-    public RecyclerViewRest(ArrayList<String> lfooditem,ArrayList<Double> lPrices,ArrayList<String> FoodImg,ArrayList<String> Descriptions, Context context){
+    public RecyclerViewRest(List<String> lfooditem, ArrayList<Double> lPrices, ArrayList<String> FoodImg, ArrayList<String> Descriptions,ArrayList<Integer> mRestaurant ,Context context){
+        this.mRestaurant= mRestaurant;
         FoodDescriptions = Descriptions;
         FoodItemName = lfooditem;
         Prices = lPrices;
@@ -66,7 +71,7 @@ public class RecyclerViewRest extends RecyclerView.Adapter<RecyclerViewRest.View
                 .placeholder(R.drawable.ic_loading_foreground)
                 .into(holder.foodimage);
 
-        String abbrev = StringUtils.abbreviate(FoodDescriptions.get(position), 20);
+        String abbrev = StringUtils.abbreviate(FoodDescriptions.get(position), 25);
         holder.foodingredients.setText(abbrev);
 
 
@@ -74,19 +79,18 @@ public class RecyclerViewRest extends RecyclerView.Adapter<RecyclerViewRest.View
 
         for (int x = 0; x < size; x++){
             String name = FoodItemName.get(x);
-            Log.d(TAG, "onBindViewHolder: Fooditem name: " + FoodItemName.get(x));
             name = StringUtils.abbreviate(name, 20);
             AbrvRestList.add(x, name);
         }
 
         holder.foodname.setText(AbrvRestList.get(position));
-        Log.d(TAG, "onBindViewHolder: foodname: " + (AbrvRestList.get(position)));
         holder.foodprice.setText("CA$ "+Prices.get(position).toString());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + FoodItemName.get(position));
                 Log.d(TAG, "onClick: clicked on description: " + FoodDescriptions.get(position));
+                ((RestaurantPage)mContext).startNextActivity(FoodItemName.get(position), FoodDescriptions.get(position), FoodImage.get(position), Prices.get(position), mRestaurant.get(position));
             }
         });
 

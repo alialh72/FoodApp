@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <meta-data
+        android:name="android.max_aspect"
+        android:value="2.1" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,12 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodApp"
+
         android:usesCleartextTraffic="true">
-        <activity android:name=".Search"></activity>
-        <activity android:name=".login" />
-        <activity android:name=".signup" />
-        <activity android:name=".RestaurantPage" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".CartPage" android:windowSoftInputMode="adjustNothing" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".checkout" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".food_page" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".Search" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".login" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".signup" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".RestaurantPage" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".MainActivity" android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

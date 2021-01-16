@@ -34,7 +34,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="60dp"
                 >
 
                 <ImageView
@@ -77,6 +77,7 @@
                         android:shadowDy="5"
                         android:shadowRadius="3"
                         android:text="Guest"
+                        android:id="@+id/welcometext"
                         android:textColor="#F2A007"
                         android:textStyle="bold"/>
 
@@ -179,6 +180,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView2"
+                    android:onClick="cuisineclick"
                     android:layout_width="wrap_content"
                     android:layout_height="175dp"
                     android:background="@drawable/border"
@@ -199,7 +201,7 @@
                             android:gravity="center"
                             android:scaleType="centerCrop"
                             app:layout_constraintEnd_toEndOf="parent"
-
+                            android:onClick="cuisineclick"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="ContentDescription"
@@ -283,15 +285,7 @@
 
 
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/white">
 
-            <include layout="@layout/main_nav_drawer"/>
-
-    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -312,6 +306,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white">
+
+        <include layout="@layout/main_nav_drawer"/>
+
+    </RelativeLayout>
 
 
 

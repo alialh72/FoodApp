@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.foodapp.nonactivityclasses.CartClass;
+
 public class checkout extends AppCompatActivity {
     CartClass cart = food_page.CartClass;
 

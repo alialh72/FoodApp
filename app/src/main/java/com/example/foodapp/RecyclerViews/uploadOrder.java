@@ -54,6 +54,7 @@ public class uploadOrder {
 
                         if (result.equals("Order Uploaded")){
                             Log.d(TAG, "run: Big success!");
+                            food_page.CartClass.clearCart();
                         }
 
                         else if (result.equals("Upload Failed!")){

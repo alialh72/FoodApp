@@ -6,12 +6,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodapp.nonactivityclasses.CartClass;
+import com.example.foodapp.nonactivityclasses.MainAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,12 +37,14 @@ public class food_page extends AppCompatActivity {
     private ArrayList<String> titles = new ArrayList<String>();
     private HashMap<String, ArrayList<String>> childchoices = new HashMap<String, ArrayList<String>>();
 
+    private ConstraintLayout constraintLayout;
+
     private ExpandableListView expandableListView;
     private MainAdapter adapter;
 
     private HashMap<String, String> foodchoices = new HashMap<String, String>();
 
-    public static CartClass CartClass = new CartClass();
+    public static com.example.foodapp.nonactivityclasses.CartClass CartClass = new CartClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class food_page extends AppCompatActivity {
             }
         });
 
+        constraintLayout = findViewById(R.id.constraintLayout);
         foodimage = findViewById(R.id.food_image);
         title = findViewById(R.id.food_title);
         mprice = findViewById(R.id.price);
@@ -93,6 +99,11 @@ public class food_page extends AppCompatActivity {
         if (choices != null){
             expandableListView.setVisibility(View.VISIBLE);
 
+        }
+        else{
+            float dpRatio = this.getResources().getDisplayMetrics().density;
+            float pixelForDp = 250 * dpRatio;
+            setMargins(constraintLayout, 0, (int) pixelForDp, 0, 0);
         }
 
 
@@ -139,6 +150,14 @@ public class food_page extends AppCompatActivity {
 
     }
 
+    private void setMargins (View view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            view.requestLayout();
+        }
+    }
+
     //first checks if there is more than one title, if so, splits it into an array
     private void seperateArrays(){
         ArrayList<String> localchoices = choices;
@@ -183,7 +202,7 @@ public class food_page extends AppCompatActivity {
             Log.d(TAG, "CartAdd: Food choices (removed previous):"+foodchoices);
         }
         else {
-            foodchoices.put("Extras", "}};:{^^%%$");
+            foodchoices.put("Extras", "%%$");
         }
 
         double lprice = MainActivity.FoodPrice.get(foodid);
@@ -213,6 +232,8 @@ public class food_page extends AppCompatActivity {
 
         numberofitemstext.setText(String.valueOf(numberoftimes));
     }
+
+
 
 
 

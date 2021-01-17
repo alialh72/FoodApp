@@ -1,32 +1,17 @@
 package com.example.foodapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -36,37 +21,20 @@ import com.bumptech.glide.Glide;
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapterLocalFavs;
 import com.example.foodapp.RecyclerViews.RecyclerViewAdapterMain;
+import com.example.foodapp.nonactivityclasses.getFood;
+import com.example.foodapp.nonactivityclasses.getInfo;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
-import com.vishnusivadas.advanced_httpurlconnection.PutData;
-
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.nio.Buffer;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     //------------vars--------------
@@ -188,10 +156,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: logged in: " + login.loggedin);
         if (login.loggedin == true){
-            if(getIntent().getStringExtra("USERNAME") != null) {
-                currentUsername = getIntent().getStringExtra("USERNAME");
+            if(!username.equals("Guest")) {
                 try {
-                    mGetInfo.mGet(currentUsername);
+                    mGetInfo.mGet(username);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -306,10 +273,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void Search(View view){
         Log.d(TAG, "Search: Search button clicked");
-    }
-
-    public void Orders(View view){
-        Log.d(TAG, "Orders: orders button clicked");
     }
 
     public void LogIn(View view){
@@ -901,5 +864,17 @@ public class MainActivity extends AppCompatActivity {
         Searching(this);
     }
 
+    public void orderpage(View view){
+
+        if(username.equals("Guest")){
+            Toast.makeText(this, "You must sign in to view your orders!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(this, prevorders.class);
+            startActivity(intent);
+            finish();
+        }
+
+    }
 
 }

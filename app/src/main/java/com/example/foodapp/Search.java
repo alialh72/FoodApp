@@ -170,9 +170,14 @@ public class Search extends AppCompatActivity {
         filteredList.clear();
         filteredList.addAll(set);
 
+        ArrayList<Double> mratings = new ArrayList<Double>();
+        for (int i = 0; i < filteredList.size();i++){
+            mratings.add(ratings.get(filteredList.get(i)));
+        }
+
         Log.d(TAG, "filter: duplicates removed: " + filteredList);
 
-        LocalAdapter.filterList(filteredList, fixImageArray(filteredList));
+        LocalAdapter.filterList(filteredList, fixImageArray(filteredList), mratings);
     }
 
     public void setRestaurant(String CurrentRestaurantName){
@@ -203,7 +208,7 @@ public class Search extends AppCompatActivity {
         ArrayList <String> empty = new ArrayList<String>();
 
         RecyclerView LocalrecyclerView = findViewById(R.id.RecyclerViewSearch);
-        LocalAdapter = new RecyclerSearch(empty, fixImageArray(empty),this);
+        LocalAdapter = new RecyclerSearch(empty, fixImageArray(empty),this, CuisineTags);
         Log.d(TAG, "initRecyclerView: adapter: "+LocalAdapter);
         LocalrecyclerView.setAdapter(LocalAdapter);
         LocalrecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

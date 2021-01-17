@@ -8,4 +8,6 @@
     <string name="fullname">Full Name</string>
     <string name="email">Email</string>
     <string name="loginhere">Login Here</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

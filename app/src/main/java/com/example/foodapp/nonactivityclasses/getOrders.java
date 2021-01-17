@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.nonactivityclasses;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.vishnusivadas.advanced_httpurlconnection.FetchData;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import java.util.concurrent.Callable;
@@ -24,26 +25,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class getInfo {
+public class getOrders {
 
     private static final String TAG = "";
-    private String mUsername;
-    private String mResult;
-
-    private String CurrentRestaurantName = "";
-    private String CurrentRestaurantImage = "";
-
     public String[] result;
-    private Integer currentPrice;
 
-    public void mGet(String username) throws ExecutionException, InterruptedException {
-        if (!username.equals("")) {
-            ExecutorService service = Executors.newFixedThreadPool(10);
 
-            Future<String[]> future = service.submit(new Task(username));
+    public String[] mGet(String username) throws ExecutionException, InterruptedException {
+        Log.d(TAG, "mGet: inside method");
+        ExecutorService service = Executors.newFixedThreadPool(10);
 
-            result = future.get(); //blocking operation
-        }
+        Future<String[]> future = service.submit(new Task(username));
+        result = future.get(); //blocking operation
+
+
+        return result;
     }
 
     static class Task implements Callable<String[]>{
@@ -52,6 +48,7 @@ public class getInfo {
         public Task(String username){
             this.username = username;
         }
+
 
         @Override
         public String[] call() throws Exception{
@@ -69,7 +66,7 @@ public class getInfo {
             //set the url to http://23.16.93.156:10013//FoodAppLogin/getinfo.php if accessing from a location outside of alis localhost
             //it might already be set as the ip above, if so just leave it alone
 
-            PutData putData = new PutData("http://192.168.1.78:10019//FoodAppLogin/getinfo.php", "POST", field, data);
+            PutData putData = new PutData("http://192.168.1.78:10019//FoodAppLogin/getorder.php", "POST", field, data);
             if (putData.startPut()) {
                 if (putData.onComplete()) {
                     String result = putData.getResult();
@@ -80,7 +77,7 @@ public class getInfo {
                     }
 
                     else{
-                        parts = result.split("-");
+                        parts = result.split("~");
                         Log.d(TAG, "call: parts: " + parts);
 
                     }
@@ -93,4 +90,14 @@ public class getInfo {
         }
     }
 
+
+
 }
+
+    /*private void setter(String result){
+        mResult = result;
+        Log.d(TAG, "setter: result: " + result);
+        Log.d(TAG, "setter: mResult " + mResult);
+        MainActivity main = new MainActivity();
+        main.mSetResult(mResult);
+    }*/

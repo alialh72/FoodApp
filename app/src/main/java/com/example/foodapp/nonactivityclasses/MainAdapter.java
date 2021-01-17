@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.nonactivityclasses;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.foodapp.R;
+import com.example.foodapp.food_page;
 
 import java.util.ArrayList;
 import java.util.HashMap;

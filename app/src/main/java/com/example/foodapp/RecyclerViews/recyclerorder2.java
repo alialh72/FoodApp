@@ -26,18 +26,19 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerCart extends RecyclerView.Adapter<RecyclerCart.ViewHolder>{
+public class recyclerorder2 extends RecyclerView.Adapter<recyclerorder2.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<String> mRestaurantName = new ArrayList<>();
-    private ArrayList<Integer> FoodIds = new ArrayList<>();
-    private ArrayList<String> mRestaurantImage = new ArrayList<>();
+    private ArrayList<Double> price = new ArrayList<>();
+    private ArrayList<String> desc = new ArrayList<>();
     private Context mContext;
 
 
-    public RecyclerCart(ArrayList<String> lrestauranttext, Context context, ArrayList<Integer> FoodId){
-        mRestaurantName = lrestauranttext;
-        FoodIds = FoodId;
+    public recyclerorder2(ArrayList<String> foodname, Context context, ArrayList<String> descs, ArrayList<Double> price){
+        mRestaurantName = foodname;
+        desc = descs;
+        this.price = price;
         mContext = context;
 
     }
@@ -45,7 +46,7 @@ public class RecyclerCart extends RecyclerView.Adapter<RecyclerCart.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.orderitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
         return holder;
@@ -56,47 +57,26 @@ public class RecyclerCart extends RecyclerView.Adapter<RecyclerCart.ViewHolder>{
         ArrayList<String> abrvlist = new ArrayList<String>();
 
         Log.d(TAG, "onBindViewHolder: called.");
-        for (int x = 0; x < food_page.CartClass.cart.size(); x++){
-            String name = food_page.CartClass.cart.get(x);
-            name = StringUtils.abbreviate(name, 20);
-            abrvlist.add(x, name);
+        for(int i = 0; i<mRestaurantName.size();i++){
+            abrvlist.add(mRestaurantName.get(i));
         }
 
 
         ArrayList<String> abrvdesc = new ArrayList<String>();
 
         Log.d(TAG, "onBindViewHolder: called.");
-        for (int x = 0; x < food_page.CartClass.descriptions.size(); x++){
-            String namem = food_page.CartClass.descriptions.get(x);
+        for (int x = 0; x < desc.size(); x++){
+            String namem = desc.get(x);
             namem = StringUtils.abbreviate(namem, 30);
             abrvdesc.add(x, namem);
         }
 
         holder.foodnameview.setText(abrvlist.get(position));
         holder.additionalinfo.setText(abrvdesc.get(position));
-        holder.price.setText(food_page.CartClass.foodprices.get(position).toString() + " CAD");
+        holder.price.setText("$"+String.valueOf(price.get(position)));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: " + food_page.CartClass.cart.get(position));
-                Log.d(TAG, "onClick: position: " + position);
-                //((RestaurantPage)mContext).switcheroo(mRestaurantName.get(position));
-                //holder.restauranttext.setTextColor(Color.parseColor("#F2A007"));
-            }
-        });
-
-        holder.bin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                food_page.CartClass.removeItem(position);
-                ((CartPage)mContext).prepData();
-                notifyDataSetChanged();
-
-                if(food_page.CartClass.cart.size() == 0){
-                    Toast.makeText(mContext, "Cart is empty", Toast.LENGTH_SHORT).show();
-                    ((CartPage)mContext).endActivity();
-                }
-            }
+            public void onClick(View v) { }
         });
 
     }
@@ -111,7 +91,6 @@ public class RecyclerCart extends RecyclerView.Adapter<RecyclerCart.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView foodnameview, price, additionalinfo;
-        ImageView bin;
         ConstraintLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -120,7 +99,6 @@ public class RecyclerCart extends RecyclerView.Adapter<RecyclerCart.ViewHolder>{
             foodnameview = itemView.findViewById(R.id.nameoffood);
             price = itemView.findViewById(R.id.price);
             additionalinfo = itemView.findViewById(R.id.additionalinfo);
-            bin = itemView.findViewById(R.id.bin);
             parent_layout = itemView.findViewById(R.id.parent_layout);
 
         }

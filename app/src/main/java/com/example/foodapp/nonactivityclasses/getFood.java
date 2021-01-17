@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.nonactivityclasses;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

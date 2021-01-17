@@ -1,8 +1,7 @@
 package com.example.foodapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,29 +9,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodapp.RecyclerViews.RecyclerCart;
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapter;
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapterLocalFavs;
-import com.example.foodapp.RecyclerViews.RecyclerViewAdapterMain;
 import com.example.foodapp.RecyclerViews.uploadOrder;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 
-import org.apache.commons.lang3.text.WordUtils;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class CartPage extends AppCompatActivity {
 
@@ -44,7 +29,7 @@ public class CartPage extends AppCompatActivity {
     private double subtotalnum = 0;
 
 
-    uploadOrder upload= new uploadOrder();
+
 
 
     boolean loggedin = login.loggedin;
@@ -92,15 +77,15 @@ public class CartPage extends AppCompatActivity {
     }
 
     public void placeOrder(View view){
-        Toast.makeText(this, "Order has been placed under name: " + MainActivity.username, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Order has been placed under username: " + MainActivity.username, Toast.LENGTH_SHORT).show();
         food_page.CartClass.setFinalOrder(finalprice);
-        upload.mUploadOrder();
-        food_page.CartClass.clearCart();
-
+        Intent intent = new Intent(this, order_complete.class);
+        startActivity(intent);
         finish();
     }
 
-    private void prepData(){
+    public void prepData(){
+        subtotalnum = 0;
         for(int i = 0; i < food_page.CartClass.foodprices.size(); i++)
             subtotalnum += food_page.CartClass.foodprices.get(i);
 
@@ -111,12 +96,14 @@ public class CartPage extends AppCompatActivity {
         double deliveryfeenum = subtotalnum * 0.07;
         BigDecimal bds = new BigDecimal(deliveryfeenum).setScale(2, RoundingMode.HALF_UP);
 
-        finalprice = subtotalnum + bd.doubleValue() + bds.doubleValue();
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        finalprice = Double.parseDouble(df.format(subtotalnum + bd.doubleValue() + bds.doubleValue()));
 
         tax.setText(String.valueOf(bd.doubleValue()) + " CAD");
         deliveryfee.setText(String.valueOf(bds.doubleValue()) + " CAD");
 
-        total.setText(String.valueOf(finalprice) + " CAD");
+        total.setText(String.valueOf(df.format(finalprice)) + " CAD");
 
 
     }
@@ -132,6 +119,10 @@ public class CartPage extends AppCompatActivity {
     }
 
     public void goback(View view){
+        finish();
+    }
+
+    public void endActivity(){
         finish();
     }
 

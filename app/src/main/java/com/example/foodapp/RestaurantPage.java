@@ -20,15 +20,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.foodapp.RecyclerViews.RecyclerViewMenu;
 import com.example.foodapp.RecyclerViews.RecyclerViewRest;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.example.foodapp.nonactivityclasses.CartClass;
 
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -78,24 +76,31 @@ public class RestaurantPage extends AppCompatActivity {
             }
         });
 
-        if(getIntent().getStringExtra("USERNAME") != null) {
-            currentUsername = getIntent().getStringExtra("USERNAME");
-            Log.d(TAG, "onCreate: logged in: " + loggedin);
-            Log.d(TAG, "onCreate: USERNAME: " + currentUsername);
-            if (loggedin == true){
-                try {
-                    mainActivity.mGetInfo.mGet(currentUsername);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        if(login.loggedin == true) {
+            if(!MainActivity.username.equals("Guest")){
+                currentUsername = MainActivity.username;
+                Log.d(TAG, "onCreate: logged in: " + loggedin);
+                Log.d(TAG, "onCreate: USERNAME: " + currentUsername);
+                if (loggedin == true){
+                    try {
+                        mainActivity.mGetInfo.mGet(MainActivity.username);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                Log.d(TAG, "onCreate: currentUsername: " + Arrays.toString(mainActivity.mGetInfo.result));
-                currentFullname = mainActivity.mGetInfo.result[0];
-                currentEmail = mainActivity.mGetInfo.result[1];
+                    Log.d(TAG, "onCreate: currentUsername: " + Arrays.toString(mainActivity.mGetInfo.result));
+                    currentFullname = mainActivity.mGetInfo.result[0];
+                    currentEmail = mainActivity.mGetInfo.result[1];
+                    Log.d(TAG, "onCreate: currentfullname: " +currentFullname);
+                    Log.d(TAG, "onCreate: currentemail: "+currentEmail);
+            }
             }
         }
+
+
+
 
         Log.d(TAG, "onCreate: new page entered");
 
@@ -127,7 +132,7 @@ public class RestaurantPage extends AppCompatActivity {
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                if(loggedin == true){
+                if(login.loggedin == true){
                     if (emailtext.getText() != currentEmail && usernametext.getText() != currentFullname){
                         emailtext.setVisibility(View.VISIBLE);
                         emailtext.setText(currentEmail);
@@ -205,13 +210,22 @@ public class RestaurantPage extends AppCompatActivity {
         Log.d(TAG, "Search: Search button clicked");
     }
 
-    public void Orders(View view){
-        Log.d(TAG, "Orders: orders button clicked");
+    public void orderpage(View view){
+
+        if(MainActivity.username.equals("Guest")){
+            Toast.makeText(this, "You must sign in to view your orders!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(this, prevorders.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     public void LogIn(View view){
         Log.d(TAG, "Log In button clicked");
-        if (loggedin == true){
+        if (login.loggedin == true){
             mainActivity.setLoggedin(false);
             drawerLayout.closeDrawer(GravityCompat.START);
             Toast.makeText(this, "You have successfully signed out", Toast.LENGTH_SHORT).show();

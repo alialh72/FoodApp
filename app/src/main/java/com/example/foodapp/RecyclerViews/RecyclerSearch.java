@@ -17,6 +17,8 @@ import com.example.foodapp.MainActivity;
 import com.example.foodapp.R;
 import com.example.foodapp.RestaurantPage;
 import com.example.foodapp.Search;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 
 import java.util.ArrayList;
 
@@ -25,10 +27,13 @@ public class RecyclerSearch extends RecyclerView.Adapter<RecyclerSearch.ViewHold
 
     private ArrayList<String> mRestaurantName = new ArrayList<>();
     private ArrayList<String> mRestaurantImage = new ArrayList<>();
+    private ArrayList<Double> Ratings = new ArrayList<Double>();
+    private ListMultimap<String, String> mCuisineTags = ArrayListMultimap.create();
     private Context mContext;
 
 
-    public RecyclerSearch(ArrayList<String> lrestauranttext,ArrayList<String> lrestaurantimage , Context context){
+    public RecyclerSearch(ArrayList<String> lrestauranttext,ArrayList<String> lrestaurantimage , Context context, ListMultimap<String, String> cuisinetags){
+        mCuisineTags = cuisinetags;
         mRestaurantName = lrestauranttext;
         mRestaurantImage = lrestaurantimage;
         mContext = context;
@@ -38,7 +43,7 @@ public class RecyclerSearch extends RecyclerView.Adapter<RecyclerSearch.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_box, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.searchbox, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
         return holder;
@@ -54,6 +59,20 @@ public class RecyclerSearch extends RecyclerView.Adapter<RecyclerSearch.ViewHold
                 .load(mRestaurantImage.get(position))
                 .into(holder.restaurantimage);
 
+        double currentRating = Ratings.get(position);
+
+        String mRating = String.valueOf(currentRating) + " ☆";
+
+        holder.restaurant_ratings.setText(mRating);
+
+        //gets tags from the listmap
+        String selectedCuisine = mRestaurantName.get(position);
+        ArrayList<String> Tags = new ArrayList<>(); //array needs to be reset for every restaurant so it is defined here
+
+        Tags.addAll(mCuisineTags.get(selectedCuisine)); //turns the collection into an arraylist
+
+        String answer = String.join(", ", Tags); //turns the arraylist into a string because an arraylist cant be set as text
+        holder.restaurant_tags.setText(answer);
 
         holder.restauranttext.setText(mRestaurantName.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -73,21 +92,23 @@ public class RecyclerSearch extends RecyclerView.Adapter<RecyclerSearch.ViewHold
         return mRestaurantName.size();
     }
 
-    public void filterList(ArrayList<String> filteredList, ArrayList<String> images){
+    public void filterList(ArrayList<String> filteredList, ArrayList<String> images, ArrayList<Double> ratings){
         mRestaurantName = filteredList;
         mRestaurantImage = images;
+        Ratings = ratings;
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView restauranttext;
+        TextView restauranttext, restaurant_ratings, restaurant_tags;
         ImageView restaurantimage;
         ConstraintLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            restaurant_tags = itemView.findViewById(R.id.tags);
+            restaurant_ratings = itemView.findViewById(R.id.ratings);
             restauranttext = itemView.findViewById(R.id.restaurant_name);
             restaurantimage = itemView.findViewById(R.id.restaurant_image);
             parent_layout = itemView.findViewById(R.id.parent_layout);

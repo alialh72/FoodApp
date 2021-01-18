@@ -63,7 +63,7 @@ public class getOrders {
             String[] data = new String[1];
             data[0] = username;
 
-            //set the url to https://23.16.93.156:10018/FoodAppLogin/getorder.php if accessing from a location outside of alis localhost
+            //set the url to http://23.16.93.156:10018/FoodAppLogin/getorder.php if accessing from a location outside of alis localhost
             //it might already be set as the ip above, if so just leave it alone
 
             PutData putData = new PutData("http://23.16.93.156:10018//FoodAppLogin/getorder.php", "POST", field, data);

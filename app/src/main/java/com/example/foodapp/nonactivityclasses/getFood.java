@@ -56,8 +56,8 @@ public class getFood {
             //Creating array for parameters
             String[] parts = new String[0];
 
-            //change ip to this if not already:   https://23.16.93.156:10018/FoodAppLogin/getinfo2.php
-            FetchData fetchData = new FetchData("https://23.16.93.156:10018/FoodAppLogin/getinfo2.php");
+            //change ip to this if not already:   http://23.16.93.156:10018/FoodAppLogin/getinfo2.php
+            FetchData fetchData = new FetchData("http://23.16.93.156:10018/FoodAppLogin/getinfo2.php");
             if (fetchData.startFetch()) {
                 if (fetchData.onComplete()) {
                     String result = fetchData.getResult();

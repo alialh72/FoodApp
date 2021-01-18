@@ -1,7 +1,6 @@
 package com.example.foodapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodapp.RecyclerViews.RecyclerCart;
-import com.example.foodapp.RecyclerViews.uploadOrder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,19 +26,8 @@ public class CartPage extends AppCompatActivity {
     private double finalprice;
     private double subtotalnum = 0;
 
-
-
-
-
-    boolean loggedin = login.loggedin;
-
-
-
-    //Object
-    public MainActivity mainActivity = new MainActivity();
-    private View decorView;
-
     //xml
+    private View decorView;
     private TextView restaurant_name_text,subtotal,tax,deliveryfee,total;
 
 
@@ -76,6 +63,7 @@ public class CartPage extends AppCompatActivity {
         return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN;
     }
 
+    //places the order, calls setfinalorder in cartclass and starts the next activity
     public void placeOrder(View view){
         Toast.makeText(this, "Order has been placed under username: " + MainActivity.username, Toast.LENGTH_SHORT).show();
         food_page.CartClass.setFinalOrder(finalprice);
@@ -84,6 +72,7 @@ public class CartPage extends AppCompatActivity {
         finish();
     }
 
+    //prepares the prices and other info
     public void prepData(){
         subtotalnum = 0;
         for(int i = 0; i < food_page.CartClass.foodprices.size(); i++)
@@ -104,10 +93,9 @@ public class CartPage extends AppCompatActivity {
         deliveryfee.setText(String.valueOf(bds.doubleValue()) + " CAD");
 
         total.setText(String.valueOf(df.format(finalprice)) + " CAD");
-
-
     }
 
+    //recycler view to display the cart
     private void initRecyclerView(){
         //Cuisine recycler
         Log.d(TAG, "initRecyclerView: init recyclerview locals");

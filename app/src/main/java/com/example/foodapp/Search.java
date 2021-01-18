@@ -114,6 +114,7 @@ public class Search extends AppCompatActivity {
             }
         });
 
+        //updates recyclerview everytime a character is typed into the edittext
         searchbox.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
@@ -128,8 +129,6 @@ public class Search extends AppCompatActivity {
             }
         });
 
-
-
         initRecyclerView();
 
         if (getIntent().getStringExtra("TAG") != null){
@@ -142,8 +141,6 @@ public class Search extends AppCompatActivity {
     private void filter(String text){
         Log.d(TAG, "filter: text: " + text);
         ArrayList<String> filteredList = new ArrayList<String>();
-
-
 
         for (String item : restaurantname){
             if(item.toLowerCase().contains(text.toLowerCase())){
@@ -179,6 +176,7 @@ public class Search extends AppCompatActivity {
 
         LocalAdapter.filterList(filteredList, fixImageArray(filteredList), mratings);
     }
+
 
     public void setRestaurant(String CurrentRestaurantName){
         String CurrentRestaurantImage = restaurantimage.get(CurrentRestaurantName);

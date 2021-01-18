@@ -89,17 +89,19 @@ public class food_page extends AppCompatActivity {
         choices = getIntent().getStringArrayListExtra("CHOICES");
         Log.d(TAG, "onCreate:inside food_page choices: " + choices);
 
-
+        //adds extra height to the layout if the name of the food is too long so it can go to the next line
         if (foodname.length() > 23){
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) title.getLayoutParams();
             params.height = getResources().getDimensionPixelSize(R.dimen.text_view_height);
             title.setLayoutParams(params);
         }
 
+        //adjusts margin depending on whether or not the fooditem has any choices assigned
         if (choices != null){
             expandableListView.setVisibility(View.VISIBLE);
-
         }
+
+
         else{
             float dpRatio = this.getResources().getDisplayMetrics().density;
             float pixelForDp = 250 * dpRatio;
@@ -150,6 +152,7 @@ public class food_page extends AppCompatActivity {
 
     }
 
+    //changes margins
     private void setMargins (View view, int left, int top, int right, int bottom) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -174,7 +177,6 @@ public class food_page extends AppCompatActivity {
 
             }
 
-
             int i;
             localchoices.remove(0);
             Log.d(TAG, "seperateArrays: titles: " + titles.size());
@@ -188,13 +190,12 @@ public class food_page extends AppCompatActivity {
                 Log.d(TAG, "seperateArrays: childchoices: " + childchoices);
             }
 
-
-
         }
-
 
     }
 
+    //adds item to the cart
+    //static object is used
     public void CartAdd(View view){
         if (!extras.getText().toString().equals("")){
             foodchoices.remove("Extras");
@@ -212,6 +213,7 @@ public class food_page extends AppCompatActivity {
         CartClass.outputname();
     }
 
+    //onclick method for the plus icon
     public void addone(View view){
         if (numberoftimes == 15){
 
@@ -222,6 +224,7 @@ public class food_page extends AppCompatActivity {
         numberofitemstext.setText(String.valueOf(numberoftimes));
     }
 
+    //onclick method for the minus icon
     public void minusone(View view){
         if (numberoftimes == 1){
 
@@ -229,13 +232,8 @@ public class food_page extends AppCompatActivity {
         else{
             numberoftimes -=1;
         }
-
         numberofitemstext.setText(String.valueOf(numberoftimes));
     }
-
-
-
-
 
 
 }

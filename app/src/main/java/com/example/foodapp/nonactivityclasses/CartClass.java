@@ -131,6 +131,7 @@ public class CartClass {
         String total = String.valueOf(totalprice);
         String ordernumber = String.valueOf(int_random);
 
+        //it adds turns the arrays into strings and adds special characters between so it can be stored in the sql database easily
         for (int l = 0; l < cartid.size(); l++)
         {
             sbb.append(cartid.get(l));

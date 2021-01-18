@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.foodapp.RecyclerViews.recyclerorder2;
-import com.example.foodapp.RecyclerViews.uploadOrder;
+import com.example.foodapp.nonactivityclasses.uploadOrder;
 
 public class order_complete extends AppCompatActivity {
 

@@ -83,9 +83,9 @@ public class login extends AppCompatActivity {
 
                             currentUsername = data[0];
 
-                            //set the url to http://23.16.93.156:10013//FoodAppLogin/login.php if accessing from a location outside of alis localhost
+                            //set the url to http://23.16.93.156:10018//FoodAppLogin/login.php if accessing from a location outside of alis localhost
                             //it might already be set as the ip above, if so just leave it alone
-                            PutData putData = new PutData("http://192.168.1.78:10019//FoodAppLogin/login.php", "POST", field, data);
+                            PutData putData = new PutData("http://23.16.93.156:10018//FoodAppLogin/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();

@@ -116,13 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: FoodId: " + FoodId.size());
 
+        //this makes sure that the arrays arent duplicated (bcs theyre static)
         if (FoodId.size() == 0){
             getHashMapFromTextFile();
         }
-
-
-
-
 
 
 
@@ -140,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         //assign xml
-        //searchBar = findViewById(R.id.RestaurantSearch);
         drawerLayout = findViewById(R.id.drawerLayout);
         emailtext = findViewById(R.id.emailfield);
         usernametext = findViewById(R.id.textView4);
@@ -148,12 +144,15 @@ public class MainActivity extends AppCompatActivity {
         background = findViewById(R.id.imageBackground);
         welcometext = findViewById(R.id.welcometext);
 
+        //sets the banner image
         Glide.with(this)
                 .asBitmap()
                 .load("https://imgur.com/ODBDNkb.png")
                 .into(background);
 
 
+
+        //checks if user is logged in, if so then gets fullname and email from database
         Log.d(TAG, "onCreate: logged in: " + login.loggedin);
         if (login.loggedin == true){
             if(!username.equals("Guest")) {
@@ -174,12 +173,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
         }
+
+        //sets the static username as guest if user isnt logged in
         else{
             username = "Guest";
         }
 
 
-
+        //sets listener for drawer layout. updates info on slide
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -202,10 +203,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        //calls the function to assign basic info abt restaurants and cuisines
         initImageBitmaps();
     }
 
+    //if someone were to switch apps then this makes sure that the system bars remain hidden
     public void onWindowFocusChanged(boolean hasFocus){
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
@@ -213,10 +215,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //returns values that are used to hide system bars
     public int hideSystemBars(){
         return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN;
     }
 
+    //checks if user is logged in and updates information in the drawer accordingly
     public void fixDrawer(boolean loggedin){
         setLoggedin(loggedin);
 
@@ -238,43 +242,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //updates static loggedin
     public void setLoggedin(boolean loggedin){
         login.loggedin = loggedin;
     }
 
-
+    //onclick method for hamburger icon
     public void ClickMenu(View view){
         openDrawer(drawerLayout);
     }
 
+    //opens drawer
     private void openDrawer(DrawerLayout drawerLayout) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    //onclick method for hamburger icon inside drawer. closes drawer.
     public void ClickLogo(View view){
         closeDrawer(drawerLayout);
     }
 
+    //closes drawer
     private void closeDrawer(DrawerLayout drawerLayout) {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 
-    public void ReturnHome(View view){
-    }
-
-    //nav drawer onclicks
-
+    //onclick for home icon. doesnt do anything if already on home page
     public void Home(View view){
         Log.d(TAG, "Home button clicked");
 
     }
 
+    //search button
     public void Search(View view){
         Log.d(TAG, "Search: Search button clicked");
     }
 
+    //when someone clicks login button also functions as a sign out button
     public void LogIn(View view){
         Log.d(TAG, "Log In button clicked");
         if (loggedin == true){
@@ -308,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: FoodCategory: " + FoodCategory);
 
 
-
         //---------------------------List of Cuisines--------------------------
         //Cuisine 1
         mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517785801228338/burger.png");
@@ -338,15 +343,7 @@ public class MainActivity extends AppCompatActivity {
         mCuisineImages.add("https://cdn.discordapp.com/attachments/713881124668964914/799517787394539530/tacos.png");
         mCuisineText.add("Mexican");
 
-
-        //Total number of dishes:
-        //Food ids:
-        //0-23 : starter dishes
-        //24 - 53: main dishes
-        //54-64: desserts
-        //65-68: sushi
-        //69 - 74: pizza
-
+        //all of this is in an if statement so the array doesnt keep getting added to everytime mainactivity is started
         if(CuisineTags.size() == 0){
             //-------------------------Restaurants---------------------------------------
             mRestaurantImages.add("https://imgur.com/pr1IZEq.jpg");
@@ -354,14 +351,12 @@ public class MainActivity extends AppCompatActivity {
 
             mRestaurantName.add("Sushi Counter");
 
-
             //-----------------------------
 
             mRestaurantImages.add("https://imgur.com/1rcwTbY.jpg");
             RestaurantImagesMap.put("Olivier's Bistro", "https://imgur.com/1rcwTbY.jpg");
 
             mRestaurantName.add("Olivier's Bistro");
-
 
             //-----------------------------
 
@@ -590,8 +585,6 @@ public class MainActivity extends AppCompatActivity {
             MenuList.put("Tequila & Tacos", "Desserts");
             //------------------------------------------------------
 
-
-
         }
 
         Multimaps.invertFrom(CuisineTags, ReverseCuisines); //Creates a reverse multimap for easy access later
@@ -599,10 +592,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initImageBitmaps: map "+CuisineTags);
 
 
-
-
         //Generates 2 lists for the main menu
-
         for (int t = 0; t < 8; t++){
             mRestaurantNameSub.add(mRestaurantName.get(t));
             mRestaurantImagesSub.add(mRestaurantImages.get(t));
@@ -615,11 +605,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(mRestaurantNameSub);
         }
 
-        //Hashmaps
-
-
 
         Log.d(TAG, "initImageBitmaps: complete bitmaps");
+
         initRecyclerView();
     }
 
@@ -627,7 +615,8 @@ public class MainActivity extends AppCompatActivity {
     //Calls the recyclerviewadapter
     private void initRecyclerView(){
 
-        if (RandomRestaurant.size()==0){
+        //same thing, makes sure the arrays arent messed with
+        if (RandomRestaurant.size() == 0){
             randomCuisine();
         }
 
@@ -654,6 +643,7 @@ public class MainActivity extends AppCompatActivity {
         LocalrecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         //Top picks recycler
+        //yes i know both adapter classes are called localfavs i just forgot to update it
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         RecyclerView LocalrecyclerView2 = findViewById(R.id.restaurantlist2);
         LocalAdapter = new RecyclerViewAdapterLocalFavs(mRestaurantNameSub2, mRestaurantImagesSub2, this, CuisineTags, Ratings);
@@ -661,7 +651,7 @@ public class MainActivity extends AppCompatActivity {
         LocalrecyclerView2.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
 
-
+        //recycler view for restaurant list at the bottom of the page
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         RecyclerView LocalrecyclerView3 = findViewById(R.id.restaurantlist3);
         LocalAdapter = new RecyclerViewAdapterLocalFavs(mRestaurantName, mRestaurantImages, this, CuisineTags, Ratings);
@@ -670,10 +660,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void cuisineRecycler(){
-
-    }
-
+    //sets the current restaurant to be passed to activity RestaurantPage
     public void setCurrentRestaurant(String restaurantname, String restaurantimage){
         CurrentRestaurantName = restaurantname;
         CurrentRestaurantImage = restaurantimage;
@@ -681,6 +668,7 @@ public class MainActivity extends AppCompatActivity {
         openRestaurantPage();
     }
 
+    //opens the restaurant page
     public void openRestaurantPage(){
         Intent intent = new Intent(getBaseContext(), RestaurantPage.class);
         intent.putExtra("RESTAURANTNAMEARRAY", mRestaurantName);
@@ -694,7 +682,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("LOGGEDIN", loggedin);
             intent.putExtra("USERNAME", currentUsername);
         }
-
 
         getVars();
 
@@ -710,6 +697,7 @@ public class MainActivity extends AppCompatActivity {
         currentPriceRange = PriceRange.get(CurrentRestaurantName);
     }
 
+    //selects a random cuisine and 2 restaurants to be picked
     private void randomCuisine(){
         TextView CuisineTypeText = findViewById(R.id.cuisinetyperandom);
         ImageView CuisineTypeImage = findViewById(R.id.cuisineimagerandom);
@@ -719,7 +707,6 @@ public class MainActivity extends AppCompatActivity {
         selectedCuisine = mCuisineText.get(randomIndex);
         Log.d(TAG, "randomCuisine: selectedcuisine: " + selectedCuisine);
         String selectedImage = mCuisineImages.get(randomIndex);
-
 
 
         RandomRestaurant.addAll(ReverseCuisines.get(selectedCuisine));
@@ -748,13 +735,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() { } //disables the go back button on android when on the main page (because there is no where back to go)
 
+    //disables the go back button on android when on the main page (because there is no where back to go)
+    @Override
+    public void onBackPressed() { }
+
+    //onclick method for search button
     public void SearchBar(View view){
         Searching(this);
     }
 
+    //opens search page, also checks if a cuisine was clicked so it can prep all the data
     public void Searching(Context context){
         Intent intent = new Intent(context, Search.class);
         intent.putExtra("RESTAURANT_NAME", mRestaurantName);
@@ -781,7 +772,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    //onclick method for cart icon
+    //checks if cart is empty, if so it sends a toast, otherwise opens cartpage
     public void CartGo(View view){
         if (food_page.CartClass.cart.size() == 0){
             Toast.makeText(this, "Cart is empty", Toast.LENGTH_SHORT).show();
@@ -794,6 +786,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //i forgot to change the name
+    //gets all the data from the getFood class and splits it into its different hashmaps
     public void getHashMapFromTextFile(){
         getFood GetFood = new getFood();
         Log.d(TAG, "getHashMapFromTextFile: inside hashmapstart");
@@ -851,19 +845,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //haha you got played
     public void yougot(View view){
         Toast.makeText(this, "lol u got played this doesnt do anything", Toast.LENGTH_SHORT).show();
     }
 
+    //recyclerview adapter calls this method when a cuisine box is clicked
     public void cuisineclick(View view){
         setTag(selectedCuisine);
     }
 
+    //sets the cusiine tag as the clicked tag and calls the searching method above
     public void setTag(String tag){
         clickedtag = tag;
         Searching(this);
     }
 
+    //opens order page, checks if user is signed in or not
     public void orderpage(View view){
 
         if(username.equals("Guest")){

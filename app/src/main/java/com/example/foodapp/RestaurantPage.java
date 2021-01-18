@@ -35,8 +35,6 @@ public class RestaurantPage extends AppCompatActivity {
 
     private static final String TAG = "";
 
-
-
     private String restaurantname, restaurantimage;
 
     private String currentUsername, currentFullname, currentEmail;
@@ -49,21 +47,18 @@ public class RestaurantPage extends AppCompatActivity {
     private ImageView restaurant_image;
 
     //----------------XML-------------------------
-    private SearchView searchBar;
     private DrawerLayout drawerLayout;
     private TextView emailtext, usernametext, logintext;
 
     private View decorView;
 
-    CartClass mCartClass = food_page.CartClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_page);
 
-
-
+        //does the same thing as it did in mainactivity
         decorView = getWindow().getDecorView();
         decorView = getWindow().getDecorView();
 
@@ -125,10 +120,10 @@ public class RestaurantPage extends AppCompatActivity {
         ratings = getIntent().getExtras().getDouble("RATINGS");
         price = getIntent().getExtras().getInt("PRICERANGE");
 
-        //mCartClass.setRestaurant(restaurantname, this);
+        setText(); //sets the textviews
 
-        setText();
 
+        //drawer listener
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -182,13 +177,13 @@ public class RestaurantPage extends AppCompatActivity {
 
     public void Home(View view){
         finish();
-
     }
 
     public void yougot(View view){
         Toast.makeText(this, "lol u got played this doesnt do anything", Toast.LENGTH_SHORT).show();
     }
 
+    //this method is called by the recyclerview of the menu to start the next page
     public void startNextActivity(String foodname, String Description, String Image, double price, int foodids){
         Intent intent = new Intent(getBaseContext(), food_page.class);
         ArrayList<String> lchoice = MainActivity.FoodChoices.get(foodids);
@@ -211,7 +206,6 @@ public class RestaurantPage extends AppCompatActivity {
     }
 
     public void orderpage(View view){
-
         if(MainActivity.username.equals("Guest")){
             Toast.makeText(this, "You must sign in to view your orders!", Toast.LENGTH_SHORT).show();
         }
@@ -302,13 +296,14 @@ public class RestaurantPage extends AppCompatActivity {
         Menu.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
     }
 
+    //switches the data within the recyclerview everytime a new section is clicked (mains, starters, desserts)
     public void switcheroo(String menu){
         ArrayList<Integer> FoodCat = new ArrayList<>(); //array list contains all foodids that are in the same category
-        ArrayList<Integer> mRestaurant = new ArrayList<>(); //contains foodids
+        ArrayList<Integer> mRestaurant = new ArrayList<>();
         List<String> RestaurantList = new ArrayList<String>(); //contains food names
         ArrayList<String> FoodImg = new ArrayList<>(); //contains food imgs
-        ArrayList<Double> Prices = new ArrayList<>(); //contains foodids
-        ArrayList<String> Descriptions = new ArrayList<>(); //contains foodids
+        ArrayList<Double> Prices = new ArrayList<>(); //contains prices
+        ArrayList<String> Descriptions = new ArrayList<>(); //contains descriptions
 
         FoodCat.addAll(MainActivity.FoodCategory.get(menu));
         mRestaurant.addAll(MainActivity.RestFood.get(restaurantname));
